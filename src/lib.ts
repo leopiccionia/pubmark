@@ -1,0 +1,1 @@
+export { generateEpub } from '@/epub'

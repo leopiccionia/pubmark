@@ -1,0 +1,10 @@
+title: Pubmark Demo
+description: A demonstration Pubmark project, that can be converted into EPUB or HTML.
+
+direction: ltr
+language: en-US
+
+creators:
+  - name: Leonardo Piccioni de Almeida
+    role: aut
+    file as: ALMEIDA, Leonardo Piccioni de

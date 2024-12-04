@@ -1,0 +1,44 @@
+{
+  "name": "pubmark",
+  "version": "0.0.1",
+  "description": "Zen-mode authoring of EPUB in Markdown",
+  "main": "src/index.js",
+  "keywords": [
+    "ebook",
+    "epub",
+    "markdown"
+  ],
+  "author": {
+    "name": "Leonardo Piccioni de Almeida",
+    "email": "leopiccionia@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@lukeed/uuid": "^2.0.1",
+    "@zip.js/zip.js": "^2.7.53",
+    "defu": "^6.1.4",
+    "js-yaml": "^4.1.0",
+    "rehype-mathjax": "^6.0.0",
+    "rehype-stringify": "^10.0.1",
+    "remark-custom-header-id": "^1.0.0",
+    "remark-directive": "^3.0.0",
+    "remark-extended-table": "^2.0.2",
+    "remark-gfm": "^4.0.0",
+    "remark-images": "^4.1.0",
+    "remark-math": "^6.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.1",
+    "unified": "^11.0.5",
+    "unist-util-select": "^5.1.0",
+    "unist-util-visit": "^5.0.0",
+    "xast-util-to-xml": "^4.0.0",
+    "xastscript": "^4.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/xast": "^2.0.4"
+  }
+}
