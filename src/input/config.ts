@@ -73,7 +73,7 @@ export type PubmarkConfig = {
  * @param partialConfig The partial user config
  * @returns The completely filled user config
  */
-function populateUserConfig (partialConfig: Partial<PubmarkConfig>): PubmarkConfig {
+export function populateUserConfig (partialConfig: Partial<PubmarkConfig>): PubmarkConfig {
   return defu(partialConfig, {
     title: '',
     description: '',
