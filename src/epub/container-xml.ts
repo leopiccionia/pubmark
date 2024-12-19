@@ -1,7 +1,7 @@
 import { u } from 'unist-builder'
 import { x } from 'xastscript'
 
-import { printXml } from '@/utils/xml'
+import { stringifyXml } from '@/utils/xml'
 
 /**
  * Generates a basic OCF `container.xml`
@@ -17,5 +17,5 @@ export function generateContainerXml (): string {
     ]),
   ])
 
-  return printXml(tree)
+  return stringifyXml(tree)
 }

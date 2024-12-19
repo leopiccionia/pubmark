@@ -3,7 +3,7 @@ import type { Element } from 'xast'
 import { x } from 'xastscript'
 
 import type { PubmarkConfig } from '@/input/config'
-import { printXml } from '@/utils/xml'
+import { stringifyXml } from '@/utils/xml'
 
 /**
  * An unique identifier for use in DublinCore
@@ -41,7 +41,7 @@ export function generateContainerOpf (config: PubmarkConfig): string {
     ])
   ])
 
-  return printXml(tree)
+  return stringifyXml(tree)
 }
 
 /**

@@ -6,7 +6,7 @@ import { toXml } from 'xast-util-to-xml'
  * @param tree The XML AST
  * @returns The XML string
  */
-export function printXml (tree: Root): string {
+export function stringifyXml (tree: Root): string {
   return toXml(tree, {
     closeEmptyElements: true,
   })
