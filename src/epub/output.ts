@@ -9,7 +9,7 @@ import { writeBinaryFile } from '@/utils/files'
  */
 function computeOutputPath (folder: string): string {
   const fileName = folder.split(sep).at(-1) ?? 'book'
-  return resolve(folder, `./dist/${fileName}.zip`)
+  return resolve(folder, `./dist/${fileName}.epub`)
 }
 
 /**
