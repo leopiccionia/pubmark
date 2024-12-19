@@ -31,7 +31,7 @@ function generateCreators (config: PubmarkConfig): Element[] {
     const dcTag = ['aut', 'dub'].includes(creator.role) ? 'dc:creator' : 'dc:contributor'
 
     const creatorMeta = [
-      x(dcTag, { id }, creator.name),
+      x(dcTag, { id, 'opf:role': creator.role }, creator.name),
       x('meta', { refines: `#${id}`, property: 'role', scheme: 'marc:relators' }, creator.role)
     ]
 
@@ -59,7 +59,7 @@ function generateCreators (config: PubmarkConfig): Element[] {
 export function generateMetadata (config: PubmarkConfig): Element {
   const { id: pubId, onix } = getUniqueIdentifier(config)
 
-  return x('metadata', { 'xmlns:dc': 'http://purl.org/dc/elements/1.1/' }, [
+  return x('metadata', { 'xmlns:dc': 'http://purl.org/dc/elements/1.1/', 'xmlns:opf': 'http://www.idpf.org/2007/opf' }, [
     x('dc:identifier', { id: PUB_ID }, pubId),
     x('dc:title', config.title),
     x('dc:description', config.description),
