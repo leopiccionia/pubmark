@@ -28,9 +28,10 @@ interface UniqueIdentifier {
 function generateCreators (config: PubmarkConfig): Element[] {
   return config.creators.flatMap((creator, index) => {
     const id = `creators-${index + 1}`
+    const dcTag = ['aut', 'dub'].includes(creator.role) ? 'dc:creator' : 'dc:contributor'
 
     const creatorMeta = [
-      x('dc:creator', { id }, creator.name),
+      x(dcTag, { id }, creator.name),
       x('meta', { refines: `#${id}`, property: 'role', scheme: 'marc:relators' }, creator.role)
     ]
 
