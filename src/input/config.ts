@@ -1,10 +1,9 @@
-import { resolve } from 'node:path'
-
 import { v4 as uuid } from '@lukeed/uuid/secure'
 import { defu } from 'defu'
 import { load as parseYaml } from 'js-yaml'
 
 import { readTextFile } from '@/utils/files'
+import { resolvePath } from '@/utils/paths'
 
 /**
  * The Pubmark config
@@ -112,7 +111,7 @@ function validateUserConfig (partialConfig: Partial<PubmarkConfig>): void {
  */
 export async function getUserConfig (folder: string): Promise<PubmarkConfig> {
   try {
-    const text = await readTextFile(resolve(folder, './meta.yaml'))
+    const text = await readTextFile(resolvePath(folder, './meta.yaml'))
     const partialConfig = parseYaml(text) as Partial<PubmarkConfig>
     validateUserConfig(partialConfig)
     const config = populateUserConfig(partialConfig)

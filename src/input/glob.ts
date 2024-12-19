@@ -18,7 +18,7 @@ export interface Asset {
 
 /**
  * Returns a list of asset files
- * @param folder The project folder
+ * @param folder The Pubmark project folder
  * @returns A list of asset file paths
  */
 export async function getAssets (folder: string): Promise<Asset[]> {
@@ -39,7 +39,7 @@ export async function getAssets (folder: string): Promise<Asset[]> {
 
 /**
  * Returns a list of sections files
- * @param folder The project folder
+ * @param folder The Pubmark project folder
  * @returns A list of sections file paths
  */
 export async function getSections (folder: string): Promise<string[]> {

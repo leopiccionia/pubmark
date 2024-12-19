@@ -1,6 +1,7 @@
-import { resolve, sep } from 'node:path'
+import { sep } from 'node:path'
 
 import { writeBinaryFile } from '@/utils/files'
+import { resolvePath } from '@/utils/paths'
 
 /**
  * Computes the path for the EPUB file
@@ -9,7 +10,7 @@ import { writeBinaryFile } from '@/utils/files'
  */
 function computeOutputPath (folder: string): string {
   const fileName = folder.split(sep).at(-1) ?? 'book'
-  return resolve(folder, `./dist/${fileName}.epub`)
+  return resolvePath(folder, `./dist/${fileName}.epub`)
 }
 
 /**

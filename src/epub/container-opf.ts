@@ -3,12 +3,13 @@ import { x } from 'xastscript'
 
 import { generateManifest } from '@/epub/opf/manifest'
 import { generateMetadata, PUB_ID } from '@/epub/opf/metadata'
+import { generateSpine } from '@/epub/opf/spine'
 import type { PubmarkConfig } from '@/input/config'
 import { stringifyXml } from '@/utils/xml'
 
 /**
  * Generates a package document
- * @param folder The project folder
+ * @param folder The Pubmark project folder
  * @param config The user config
  * @returns The generated XML string
  */
@@ -24,7 +25,7 @@ export async function generateContainerOpf (folder: string, config: PubmarkConfi
     }, [
       generateMetadata(config),
       await generateManifest(folder),
-      x('spine', { }, []), //@TODO
+      await generateSpine(folder, config),
     ])
   ])
 

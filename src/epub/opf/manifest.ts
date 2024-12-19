@@ -2,19 +2,11 @@ import type { Element } from 'xast'
 import { x } from 'xastscript'
 
 import { getAssets, getSections } from '@/input/glob'
-
-/**
- * Generates an unique ID from file path
- * @param path The file path
- * @returns An unique ID
- */
-function generateItemId (path: string): string {
-  return path.replaceAll(/\W/g, '-')
-}
+import { generateItemId, replaceExtension } from '@/utils/paths'
 
 /**
  * Generates the package's manifest
- * @param folder The project folder
+ * @param folder The Pubmark project folder
  * @returns The generated XML tree
  */
 export async function generateManifest (folder: string): Promise<Element> {
@@ -35,10 +27,13 @@ export async function generateManifest (folder: string): Promise<Element> {
       href: asset.path,
       'media-type': asset.mime,
     })),
-    ...sections.map((section) => x('item', {
-      id: generateItemId(section),
-      href: section,
-      'media-type': 'application/xhtml+xml',
-    })),
+    ...sections.map((section) => {
+      const href = replaceExtension(section, '.xhtml')
+      return x('item', {
+        id: generateItemId(href),
+        href,
+        'media-type': 'application/xhtml+xml',
+      })
+    }),
   ])
 }
