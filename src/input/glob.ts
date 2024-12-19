@@ -29,6 +29,8 @@ export async function getAssets (cwd: string): Promise<Asset[]> {
     const mime = getMimeType(path)
     if (mime && isValidMediaType(mime)) {
       assets.push({ mime, path })
+    } else {
+      console.warn(`Invalid asset "${path}" with ${mime ? `"${mime}"` : 'unknown' } MIME type.`)
     }
   }
 
