@@ -45,12 +45,11 @@ export function getMimeType (path: string): string | undefined {
 }
 
 /**
- * Returns if the given path matches a valid media type
- * @param path The file path
+ * Returns if the given MIME type is a valid media type
+ * @param path The MIME type
  * @returns True if the media type is recognized and valid, false otherwise
  */
-export function isValidMediaType (path: string): boolean {
-  const mimeType = getMimeType(path)
+export function isValidMediaType (mimeType: string | undefined): boolean {
   if (!mimeType) {
     return false
   }
