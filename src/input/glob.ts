@@ -18,11 +18,11 @@ export interface Asset {
 
 /**
  * Returns a list of asset files
- * @param cwd The root of project folder
+ * @param folder The project folder
  * @returns A list of asset file paths
  */
-export async function getAssets (cwd: string): Promise<Asset[]> {
-  const paths = await glob(['assets/**'], { cwd })
+export async function getAssets (folder: string): Promise<Asset[]> {
+  const paths = await glob(['assets/**'], { cwd: folder })
   const assets = []
 
   for (const path of paths) {
@@ -35,4 +35,13 @@ export async function getAssets (cwd: string): Promise<Asset[]> {
   }
 
   return assets
+}
+
+/**
+ * Returns a list of sections files
+ * @param folder The project folder
+ * @returns A list of sections file paths
+ */
+export async function getSections (folder: string): Promise<string[]> {
+  return glob(['sections/**.md'], { cwd: folder })
 }
