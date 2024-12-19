@@ -2,7 +2,7 @@
   "name": "pubmark",
   "version": "0.0.1",
   "description": "Zen-mode authoring of EPUB in Markdown",
-  "main": "src/index.js",
+  "type": "module",
   "keywords": [
     "ebook",
     "epub",
@@ -46,6 +46,7 @@
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
     "@types/xast": "^2.0.4",
+    "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8"
   }
 }

@@ -1,11 +1,8 @@
-import { resolve } from 'node:path'
-
+import tsConfigaths from 'vite-tsconfig-paths'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'),
-    },
-  },
+  plugins: [
+    tsConfigaths(),
+  ],
 })
