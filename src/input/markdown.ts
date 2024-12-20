@@ -30,7 +30,7 @@ export function createBaseMarkdownParser (): Processor<Root, Root> {
  * @param path The Markdown source code
  * @returns The Markdown AST
  */
-export async function parseMarkdown (source: string): Promise<Root> {
+export function parseMarkdown (source: string): Root {
   const result = createBaseMarkdownParser()
     .parse(source)
 
