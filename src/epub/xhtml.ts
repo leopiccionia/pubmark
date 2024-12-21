@@ -5,7 +5,8 @@ import remarkRehype from 'remark-rehype'
 
 import type { PubmarkConfig } from '@/input/config'
 import { createBaseMarkdownParser } from '@/input/markdown'
-import { tocDirective } from '@/input/plugins/toc'
+import { tocDirectivePlugin } from '@/input/plugins/toc'
+import { rewriteUrlPlugin } from '@/input/plugins/url-rewrite'
 import { extractTitle } from '@/input/title'
 import { readTextFile } from '@/utils/files'
 import { generateItemId, replaceExtension, resolvePath } from '@/utils/paths'
@@ -35,7 +36,8 @@ async function compileSection (source: string, isToc: boolean = false): Promise<
   const parser = createBaseMarkdownParser()
 
   if (isToc) {
-    parser.use(tocDirective, { target: 'epub' })
+    parser.use(rewriteUrlPlugin, { extension: '.xhtml' })
+    parser.use(tocDirectivePlugin, { target: 'epub' })
   }
 
   const content = await parser

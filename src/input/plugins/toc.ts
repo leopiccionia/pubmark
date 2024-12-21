@@ -20,7 +20,7 @@ interface TocDirectiveOptions {
  * @param options The plugin options
  * @returns The Remark plugin
  */
-export function tocDirective (options: TocDirectiveOptions) {
+export function tocDirectivePlugin (options: TocDirectiveOptions) {
   return function (tree: Root) {
     visit(tree, (node) => {
       if (node.type === 'containerDirective' && node.name === 'toc') {
