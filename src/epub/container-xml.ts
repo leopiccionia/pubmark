@@ -12,7 +12,7 @@ export function generateContainerXml (): string {
     u('instruction', { name: 'xml' }, 'version="1.0"'),
     x('container', { version: '1.0', xmlns: 'urn:oasis:names:tc:opendocument:xmlns:container' }, [
       x('rootfiles', [
-        x('rootfile', { 'full-path': 'PUBMARK/container.opf', 'media-type': 'application/oebps-package+xml' }),
+        x('rootfile', { 'full-path': 'container.opf', 'media-type': 'application/oebps-package+xml' }),
       ]),
     ]),
   ])

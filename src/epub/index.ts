@@ -20,7 +20,7 @@ export async function generateEpub (folder: string): Promise<void> {
   addTextFile(container, 'META-INF/container.xml', containerXml)
 
   const containerOpf = await generateContainerOpf(folder, config)
-  addTextFile(container, 'PUBMARK/container.opf', containerOpf)
+  addTextFile(container, 'container.opf', containerOpf)
 
   addTextFile(container, 'index.xhtml', await compileTocIntoXhtml(folder, config))
 
