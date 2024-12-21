@@ -31,7 +31,7 @@ function generateCreators (config: PubmarkConfig): Element[] {
     const dcTag = ['aut', 'dub'].includes(creator.role) ? 'dc:creator' : 'dc:contributor'
 
     const creatorMeta = [
-      x(dcTag, { id, 'opf:role': creator.role }, creator.name),
+      x(dcTag, { id }, creator.name),
       x('meta', { refines: `#${id}`, property: 'role', scheme: 'marc:relators' }, creator.role)
     ]
 
@@ -64,7 +64,7 @@ export function generateMetadata (config: PubmarkConfig): Element {
     x('dc:title', config.title),
     x('dc:description', config.description),
     x('dc:language', config.language),
-    x('metadata', { refines: `#${PUB_ID}`, property: 'identifier-type', scheme: 'onix:codelist5' }, onix),
+    x('meta', { refines: `#${PUB_ID}`, property: 'identifier-type', scheme: 'onix:codelist5' }, onix),
     ...generateCreators(config),
   ])
 }
