@@ -15,10 +15,11 @@ export async function generateSpine (folder: string, config: PubmarkConfig): Pro
   const facadeSource = await readTextFile(resolvePath(folder, './README.md'))
   const toc = extractSections(facadeSource)
 
-  return x('spine', { 'page-progression-direction': config.direction },
-    toc.map((entry) => x('itemref', {
+  return x('spine', { 'page-progression-direction': config.direction }, [
+    x('itemref', { idref: 'index-xhtml', linear: 'yes' }),
+    ...toc.map((entry) => x('itemref', {
       idref: generateItemId(replaceExtension(entry.href, '.xhtml')),
       linear: 'yes',
-    }))
-  )
+    })),
+  ])
 }
