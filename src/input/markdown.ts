@@ -1,8 +1,8 @@
-import type { Root } from 'mdast'
-import remarkCustomHeaderId from 'remark-custom-header-id'
+import type { Node, Root } from 'mdast'
 import remarkDirective from 'remark-directive'
 import remarkExtendedTable from 'remark-extended-table'
 import remarkGfm from 'remark-gfm'
+import remarkHeadingId from 'remark-heading-id'
 import remarkImages from 'remark-images'
 import remarkMath from 'remark-math'
 import remarkParse from 'remark-parse'
@@ -13,13 +13,13 @@ import type { Processor } from 'unified'
  * Configures the Markdown parser with the default plugins
  * @returns The Markdown parser
  */
-export function createBaseMarkdownParser (): Processor<Root, Root> {
+export function createBaseMarkdownParser (): Processor<Root, Node, Node> {
   const parser = unified()
     .use(remarkParse)
     .use(remarkDirective)
-    .use(remarkCustomHeaderId)
     .use(remarkGfm)
     .use(remarkExtendedTable)
+    .use(remarkHeadingId, { defaults: true })
     .use(remarkImages)
     .use(remarkMath)
   return parser
