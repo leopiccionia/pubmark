@@ -5,6 +5,7 @@ import remarkRehype from 'remark-rehype'
 
 import type { PubmarkConfig } from '@/input/config'
 import { createBaseMarkdownParser } from '@/input/markdown'
+import { tocDirective } from '@/input/plugins/toc'
 import { extractTitle } from '@/input/title'
 import { readTextFile } from '@/utils/files'
 import { generateItemId, replaceExtension, resolvePath } from '@/utils/paths'
@@ -25,15 +26,19 @@ interface ParsedSection {
 }
 
 /**
- * Converts the section into XHTML
- * @param folder The Pubmark project folder
- * @param path The file path
+ * Compiles the section into XHTML
  * @param source The Markdown source code
- * @param config The user config
+ * @param isToc If this section is the table of contents
  * @returns The XHTML string
  */
-async function compileSection (source: string): Promise<string> {
-  const content = await createBaseMarkdownParser()
+async function compileSection (source: string, isToc: boolean = false): Promise<string> {
+  const parser = createBaseMarkdownParser()
+
+  if (isToc) {
+    parser.use(tocDirective, { target: 'epub' })
+  }
+
+  const content = await parser
     .use(remarkRehype, { clobberPrefix: '' })
     .use(rehypeFigure)
     .use(rehypeMathJax)
@@ -46,9 +51,8 @@ async function compileSection (source: string): Promise<string> {
   return String(content)
 }
 
-
 /**
- * Convert the sections into XHTML
+ * Compiles the sections into XHTML
  * @param folder The Pubmark project folder
  * @param sections A list of section paths
  * @param config The user config
@@ -59,12 +63,30 @@ export async function compileSectionsToXhtml(folder: string, sections: string[],
 
   return Promise.all(sections.map(async (section) => {
     const source = await readTextFile(resolvePath(folder, section))
-
-    const bodyClass = generateItemId(section)
-    const title = extractTitle(source)
-
-    const content = await compileSection(source)
-    const document = template({ bodyClass, config, content, title })
+    const document = template({
+      bodyClass: generateItemId(section),
+      config,
+      content: await compileSection(source, false),
+      title: extractTitle(source),
+    })
     return { path: replaceExtension(section, '.xhtml'), content: document }
   }))
+}
+
+/**
+ * Compiles the TOC document into XHTML
+ * @param folder The Pubmark project folder
+ * @param config The user config
+ * @returns The XHTML string
+ */
+export async function compileTocIntoXhtml(folder: string, config: PubmarkConfig): Promise<string> {
+  const template = await createTemplate('epub-toc.html', ['bodyClass', 'config', 'content', 'title'] as const)
+  const source = await readTextFile(resolvePath(folder, 'README.md'))
+  const document = template({
+    bodyClass: 'README-md',
+    config,
+    content: await compileSection(source, true),
+    title: undefined,
+  })
+  return document
 }
