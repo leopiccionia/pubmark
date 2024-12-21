@@ -2,7 +2,8 @@
 /// <reference types="mdast-util-directive" />
 
 import { h } from 'hastscript'
-import type { Root } from 'mdast'
+import type { List, Root } from 'mdast'
+import { selectAll } from 'unist-util-select'
 import { visit } from 'unist-util-visit'
 
 /**
@@ -35,6 +36,12 @@ export function tocDirectivePlugin (options: TocDirectiveOptions) {
         const data = node.data || (node.data = {})
         data.hName = 'nav'
         data.hProperties = h('nav', properties).properties
+
+        if (options.target === 'epub') {
+          for (const list of selectAll('list', node) as List[]) {
+            list.ordered = true
+          }
+        }
       }
     })
   }
