@@ -16,17 +16,8 @@ export async function generateManifest (folder: string): Promise<Element> {
   // @TODO Cover image
 
   return x('manifest', [
-    x('item', {
-      id: 'index-xhtml',
-      href: 'index.xhtml',
-      'media-type': 'application/xhtml+xml',
-      properties: 'nav',
-    }),
-    ...assets.map((asset) => x('item', {
-      id: generateItemId(asset.path),
-      href: asset.path,
-      'media-type': asset.mime,
-    })),
+    x('item', { id: 'nav-xhtml', href: 'nav.xhtml', 'media-type': 'application/xhtml+xml', properties: 'nav' }),
+    x('item', { id: 'index-xhtml', href: 'index.xhtml', 'media-type': 'application/xhtml+xml' }),
     ...sections.map((section) => {
       const href = replaceExtension(section, '.xhtml')
       return x('item', {
@@ -35,5 +26,10 @@ export async function generateManifest (folder: string): Promise<Element> {
         'media-type': 'application/xhtml+xml',
       })
     }),
+    ...assets.map((asset) => x('item', {
+      id: generateItemId(asset.path),
+      href: asset.path,
+      'media-type': asset.mime,
+    })),
   ])
 }

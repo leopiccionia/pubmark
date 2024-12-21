@@ -27,6 +27,24 @@ interface ParsedSection {
 }
 
 /**
+ * Compiles the index document into XHTML
+ * @param folder The Pubmark project folder
+ * @param config The user config
+ * @returns The XHTML string
+ */
+export async function compileIndexToXhtml(folder: string, config: PubmarkConfig): Promise<string> {
+  const template = await createTemplate('epub-index.html', ['bodyClass', 'config', 'content', 'title'] as const)
+  const source = await readTextFile(resolvePath(folder, 'README.md'))
+  const document = template({
+    bodyClass: 'README-md',
+    config,
+    content: await compileSection(source, true),
+    title: undefined,
+  })
+  return document
+}
+
+/**
  * Compiles the section into XHTML
  * @param source The Markdown source code
  * @param isToc If this section is the table of contents
@@ -37,7 +55,7 @@ async function compileSection (source: string, isToc: boolean = false): Promise<
 
   if (isToc) {
     parser.use(rewriteUrlPlugin, { extension: '.xhtml' })
-    parser.use(tocDirectivePlugin, { target: 'epub' })
+    parser.use(tocDirectivePlugin)
   }
 
   const content = await parser
@@ -73,22 +91,4 @@ export async function compileSectionsToXhtml(folder: string, sections: string[],
     })
     return { path: replaceExtension(section, '.xhtml'), content: document }
   }))
-}
-
-/**
- * Compiles the TOC document into XHTML
- * @param folder The Pubmark project folder
- * @param config The user config
- * @returns The XHTML string
- */
-export async function compileTocIntoXhtml(folder: string, config: PubmarkConfig): Promise<string> {
-  const template = await createTemplate('epub-toc.html', ['bodyClass', 'config', 'content', 'title'] as const)
-  const source = await readTextFile(resolvePath(folder, 'README.md'))
-  const document = template({
-    bodyClass: 'README-md',
-    config,
-    content: await compileSection(source, true),
-    title: undefined,
-  })
-  return document
 }

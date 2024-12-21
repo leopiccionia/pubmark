@@ -1,7 +1,8 @@
 import { generateContainerOpf } from '@/epub/container-opf'
 import { generateContainerXml } from '@/epub/container-xml'
+import { generateNavXhtml } from '@/epub/nav-xhtml'
 import { saveEpub } from '@/epub/output'
-import { compileSectionsToXhtml, compileTocIntoXhtml } from '@/epub/xhtml'
+import { compileSectionsToXhtml, compileIndexToXhtml } from '@/epub/xhtml'
 import { addBinaryFile, addTextFile, createContainer, sealContainer } from '@/epub/zip'
 import { getUserConfig } from '@/input/config'
 import { getAssets, getSections } from '@/input/glob'
@@ -25,7 +26,8 @@ export async function generateEpub (folder: string): Promise<void> {
   const containerOpf = await generateContainerOpf(folder, config)
   addTextFile(container, 'EPUB/container.opf', containerOpf)
 
-  addTextFile(container, 'EPUB/index.xhtml', await compileTocIntoXhtml(folder, config))
+  addTextFile(container, 'EPUB/nav.xhtml', await generateNavXhtml(folder, config))
+  addTextFile(container, 'EPUB/index.xhtml', await compileIndexToXhtml(folder, config))
 
   for (const { content, path } of await compileSectionsToXhtml(folder, sections, config)) {
     addTextFile(container, `EPUB/${path}`, content)
