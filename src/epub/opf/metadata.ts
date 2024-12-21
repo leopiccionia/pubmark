@@ -64,9 +64,18 @@ export function generateMetadata (config: PubmarkConfig): Element {
     x('dc:title', config.title),
     x('dc:description', config.description),
     x('dc:language', config.language),
+    x('meta', { property: 'dcterms:modified' }, getTimestamp()),
     x('meta', { refines: `#${PUB_ID}`, property: 'identifier-type', scheme: 'onix:codelist5' }, onix),
     ...generateCreators(config),
   ])
+}
+
+/**
+ * Returns the timestamp, in `CCYY-MM-DDThh:mm:ssZ` format
+ */
+function getTimestamp (): string {
+  const isoString = new Date().toISOString()
+  return isoString.slice(0, 19) + 'Z'
 }
 
 /**
