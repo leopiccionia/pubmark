@@ -23,17 +23,17 @@ export async function generateEpub (folder: string): Promise<void> {
   addTextFile(container, 'META-INF/container.xml', containerXml)
 
   const containerOpf = await generateContainerOpf(folder, config)
-  addTextFile(container, 'container.opf', containerOpf)
+  addTextFile(container, 'EPUB/container.opf', containerOpf)
 
-  addTextFile(container, 'index.xhtml', await compileTocIntoXhtml(folder, config))
+  addTextFile(container, 'EPUB/index.xhtml', await compileTocIntoXhtml(folder, config))
 
   for (const { content, path } of await compileSectionsToXhtml(folder, sections, config)) {
-    addTextFile(container, path, content)
+    addTextFile(container, `EPUB/${path}`, content)
   }
 
   for (const asset of assets) {
     const blob = await readBinaryFile(resolvePath(folder, asset.path))
-    addBinaryFile(container, asset.path, blob)
+    addBinaryFile(container, `EPUB/${asset.path}`, blob)
   }
 
   const epub = await sealContainer(container)
