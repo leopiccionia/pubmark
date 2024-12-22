@@ -13,7 +13,7 @@ import { stringifyXml } from '@/utils/xml'
  * @param config The user config
  * @returns The generated XML string
  */
-export async function generateContainerOpf (folder: string, config: PubmarkConfig): Promise<string> {
+export async function generateContentOpf (folder: string, config: PubmarkConfig): Promise<string> {
   const tree = x(null, [
     u('instruction', { name: 'xml' }, 'version="1.0"'),
     x('package', {
