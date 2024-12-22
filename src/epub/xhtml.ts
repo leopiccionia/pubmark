@@ -38,7 +38,7 @@ export async function compileIndexToXhtml(folder: string, config: PubmarkConfig)
   const document = template({
     bodyClass: 'README-md',
     config,
-    content: await compileSection(source, true),
+    content: await compileSection(source),
     title: undefined,
   })
   return document
@@ -47,18 +47,12 @@ export async function compileIndexToXhtml(folder: string, config: PubmarkConfig)
 /**
  * Compiles the section into XHTML
  * @param source The Markdown source code
- * @param isToc If this section is the table of contents
  * @returns The XHTML string
  */
-async function compileSection (source: string, isToc: boolean = false): Promise<string> {
-  const parser = createBaseMarkdownParser()
-
-  if (isToc) {
-    parser.use(rewriteUrlPlugin, { extension: '.xhtml' })
-    parser.use(tocDirectivePlugin)
-  }
-
-  const content = await parser
+async function compileSection (source: string): Promise<string> {
+  const content = await createBaseMarkdownParser()
+    .use(rewriteUrlPlugin, { extension: '.xhtml' })
+    .use(tocDirectivePlugin)
     .use(remarkRehype, { clobberPrefix: '' })
     .use(rehypeFigure)
     .use(rehypeMathJax)
@@ -86,7 +80,7 @@ export async function compileSectionsToXhtml(folder: string, sections: string[],
     const document = template({
       bodyClass: generateItemId(section),
       config,
-      content: await compileSection(source, false),
+      content: await compileSection(source),
       title: extractTitle(source),
     })
     return { path: replaceExtension(section, '.xhtml'), content: document }
