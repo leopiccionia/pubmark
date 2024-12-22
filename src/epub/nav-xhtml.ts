@@ -2,6 +2,7 @@ import type { Element } from 'xast'
 import { x } from 'xastscript'
 
 import type { PubmarkConfig } from '@/input/config'
+import type { Locale } from '@/input/locale'
 import { extractSections } from '@/input/toc'
 import type { TocEntry } from '@/input/toc'
 import { readTextFile } from '@/utils/files'
@@ -29,7 +30,7 @@ function generateList (entries: TocEntry[]): Element {
  * @param config The user config
  * @returns The generated XML string
  */
-export async function generateNavXhtml (folder: string, config: PubmarkConfig): Promise<string> {
+export async function generateNavXhtml (folder: string, config: PubmarkConfig, locale: Locale): Promise<string> {
   const template = await createTemplate('epub-nav.html', ['config', 'content'] as const)
 
   const source = await readTextFile(resolvePath(folder, 'README.md'))
@@ -38,17 +39,17 @@ export async function generateNavXhtml (folder: string, config: PubmarkConfig): 
   const tree = x(null, [
     x('h1', config.title),
     x('nav', { 'epub:type': 'toc' }, [
-      x('h2', 'Table of contents'),
+      x('h2', locale['toc']),
       generateList(toc),
     ]),
     x('nav', { 'epub:type': 'landmarks' }, [
-      x('h2', 'Landmarks'),
+      x('h2', locale['landmarks']),
       x('ol', [
         x('li', [
-          x('a', { 'epub:type': 'toc', 'href': 'index.xhtml#toc' }, 'Table of contents'),
+          x('a', { 'epub:type': 'toc', 'href': 'index.xhtml#toc' }, locale['toc']),
         ]),
         x('li', [
-          x('a', { 'epub:type': 'bodymatter', 'href': getContentAnchor(toc[0]) }, 'Guide'),
+          x('a', { 'epub:type': 'bodymatter', 'href': getContentAnchor(toc[0]) }, locale['bodymatter']),
         ]),
       ]),
     ]),

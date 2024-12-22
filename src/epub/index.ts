@@ -6,6 +6,7 @@ import { compileSectionsToXhtml, compileIndexToXhtml } from '@/epub/xhtml'
 import { addBinaryFile, addTextFile, createContainer, sealContainer } from '@/epub/zip'
 import { getUserConfig } from '@/input/config'
 import { getAssets, getSections } from '@/input/glob'
+import { loadLocale } from '@/input/locale'
 import { readBinaryFile } from '@/utils/files'
 import { resolvePath } from '@/utils/paths'
 
@@ -16,6 +17,7 @@ import { resolvePath } from '@/utils/paths'
 export async function generateEpub (folder: string): Promise<void> {
   const assets = await getAssets(folder)
   const config = await getUserConfig(folder)
+  const locale = await loadLocale(folder, config.language)
   const sections = await getSections(folder)
 
   const container = await createContainer()
@@ -26,7 +28,7 @@ export async function generateEpub (folder: string): Promise<void> {
   const containerOpf = await generateContentOpf(folder, config)
   addTextFile(container, 'OEBPS/content.opf', containerOpf)
 
-  addTextFile(container, 'OEBPS/nav.xhtml', await generateNavXhtml(folder, config))
+  addTextFile(container, 'OEBPS/nav.xhtml', await generateNavXhtml(folder, config, locale))
   addTextFile(container, 'OEBPS/index.xhtml', await compileIndexToXhtml(folder, config))
 
   for (const { content, path } of await compileSectionsToXhtml(folder, sections, config)) {
