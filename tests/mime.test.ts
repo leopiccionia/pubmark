@@ -1,6 +1,6 @@
-import { getMimeType, isValidMediaType } from '@/input/mime'
+import { describe, expect, it } from 'vitest'
 
-import { expect, describe, it } from 'vitest'
+import { getMimeType, isValidMediaType } from '@/input/mime'
 
 describe('Get MIME types', () => {
   it('Images', () => {
