@@ -14,6 +14,10 @@ export type PubmarkConfig = {
    */
   title: string,
   /**
+   * The book subtitle
+   */
+  subtitle: string,
+  /**
    * The book description
    */
   description: string,
@@ -27,6 +31,19 @@ export type PubmarkConfig = {
    */
   language: string,
   /**
+   * The book publisher
+   */
+  publisher: {
+    /**
+     * The publisher type
+     */
+    type?: 'Organization' | 'Person',
+    /**
+     * The publisher name
+     */
+    name: string
+  },
+  /**
    * A list of contributors to the book
    */
   creators: Array<{
@@ -39,6 +56,10 @@ export type PubmarkConfig = {
      * @see https://www.loc.gov/marc/relators/relaterm.html
      */
     role: string,
+    /**
+     * The contributor's type
+     */
+    type?: 'Organization' | 'Person',
     /**
      * Normalized form of contributor's name
      */
@@ -75,9 +96,14 @@ export type PubmarkConfig = {
 export function populateUserConfig (partialConfig: Partial<PubmarkConfig>): PubmarkConfig {
   return defu(partialConfig, {
     title: '',
+    subtitle: '',
     description: '',
     direction: 'ltr' as const,
     language: 'en',
+    publisher: {
+      type: 'Organization' as const,
+      name: '',
+    },
     creators: [],
     ids: {
       uuid: uuid(),
