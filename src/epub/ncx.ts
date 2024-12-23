@@ -1,8 +1,8 @@
 import type { Element } from 'xast'
 import { x } from 'xastscript'
 
+import type { PubmarkContext } from '@/context'
 import { getUniqueIdentifier } from '@/epub/opf/metadata'
-import type { PubmarkConfig } from '@/input/config'
 import { extractSections } from '@/input/toc'
 import type { TocEntry } from '@/input/toc'
 import { readTextFile } from '@/utils/files'
@@ -27,22 +27,21 @@ function generateList (entries: TocEntry[], prefix: string = 'ncx-'): Element[] 
 
 /**
  * Generates the NCX navigation document, for EPUB 2.0 compatibility
- * @param folder The Pubmark project folder
- * @param config The user config
+ * @param ctx The Pubmark execution context
  * @returns The generated NCX/XML string
  *
  */
-export async function generateNcx (folder: string, config: PubmarkConfig): Promise<string> {
-  const source = await readTextFile(resolvePath(folder, 'README.md'))
+export async function generateNcx (ctx: PubmarkContext): Promise<string> {
+  const source = await readTextFile(resolvePath(ctx.folder, 'README.md'))
   const toc = extractSections(source)
 
   const tree = x(null, [
-    x('ncx', { version: '2005-1', 'xml:lang': config.language, xmlns: 'http://www.daisy.org/z3986/2005/ncx/' }, [
+    x('ncx', { version: '2005-1', 'xml:lang': ctx.config.language, xmlns: 'http://www.daisy.org/z3986/2005/ncx/' }, [
       x('head', [
-        x('meta', { content: getUniqueIdentifier(config).id, name: 'dtb:uid' }),
+        x('meta', { content: getUniqueIdentifier(ctx.config).id, name: 'dtb:uid' }),
       ]),
       x('docTitle', [
-        x('text', config.title),
+        x('text', ctx.config.title),
       ]),
       x('navMap', generateList(toc)),
     ]),

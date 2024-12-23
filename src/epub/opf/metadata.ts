@@ -1,6 +1,7 @@
 import type { Element } from 'xast'
 import { x } from 'xastscript'
 
+import type { PubmarkContext } from '@/context'
 import type { PubmarkConfig } from '@/input/config'
 
 export const PUB_ID: string = 'pub-id'
@@ -53,10 +54,11 @@ function generateCreators (config: PubmarkConfig): Element[] {
 
 /**
  * Generates the package's `<metadata>` section
- * @param config The user config
+ * @param ctx The Pubmark execution context
  * @returns The generated XML tree
  */
-export function generateMetadata (config: PubmarkConfig): Element {
+export function generateMetadata (ctx: PubmarkContext): Element {
+  const { config } = ctx
   const { id: pubId, onix } = getUniqueIdentifier(config)
 
   return x('metadata', { 'xmlns:dc': 'http://purl.org/dc/elements/1.1/', 'xmlns:opf': 'http://www.idpf.org/2007/opf' }, [

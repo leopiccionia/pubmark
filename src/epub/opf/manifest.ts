@@ -1,17 +1,18 @@
 import type { Element } from 'xast'
 import { x } from 'xastscript'
 
+import type { PubmarkContext } from '@/context'
 import { getAssets, getSections } from '@/input/glob'
 import { generateItemId, replaceExtension } from '@/utils/paths'
 
 /**
  * Generates the package's manifest
- * @param folder The Pubmark project folder
+ * @param ctx The Pubmark execution context
  * @returns The generated XML tree
  */
-export async function generateManifest (folder: string): Promise<Element> {
-  const assets = await getAssets(folder)
-  const sections = await getSections(folder)
+export async function generateManifest (ctx: PubmarkContext): Promise<Element> {
+  const assets = await getAssets(ctx.folder)
+  const sections = await getSections(ctx.folder)
 
   // @TODO Cover image
 

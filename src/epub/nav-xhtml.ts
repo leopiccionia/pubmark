@@ -1,8 +1,7 @@
 import type { Element } from 'xast'
 import { x } from 'xastscript'
 
-import type { PubmarkConfig } from '@/input/config'
-import type { Locale } from '@/input/locale'
+import type { PubmarkContext } from '@/context'
 import { extractSections } from '@/input/toc'
 import type { TocEntry } from '@/input/toc'
 import { readTextFile } from '@/utils/files'
@@ -26,38 +25,36 @@ function generateList (entries: TocEntry[]): Element {
 
 /**
  * Generates the navigation document
- * @param folder The Pubmark project folder
- * @param config The user config
- * @param locale The user locale
+ * @param ctx The Pubmark execution context
  * @returns The generated XML string
  */
-export async function generateNavXhtml (folder: string, config: PubmarkConfig, locale: Locale): Promise<string> {
+export async function generateNavXhtml (ctx: PubmarkContext): Promise<string> {
   const template = await createTemplate('epub-nav.html', ['config', 'content'] as const)
 
-  const source = await readTextFile(resolvePath(folder, 'README.md'))
+  const source = await readTextFile(resolvePath(ctx.folder, 'README.md'))
   const toc = extractSections(source)
 
   const tree = x(null, [
-    x('h1', config.title),
+    x('h1', ctx.config.title),
     x('nav', { 'epub:type': 'toc' }, [
-      x('h2', locale['toc']),
+      x('h2', ctx.locale['toc']),
       generateList(toc),
     ]),
     x('nav', { 'epub:type': 'landmarks' }, [
-      x('h2', locale['landmarks']),
+      x('h2', ctx.locale['landmarks']),
       x('ol', [
         x('li', [
-          x('a', { 'epub:type': 'toc', 'href': 'index.xhtml#toc' }, locale['toc']),
+          x('a', { 'epub:type': 'toc', 'href': 'index.xhtml#toc' }, ctx.locale['toc']),
         ]),
         x('li', [
-          x('a', { 'epub:type': 'bodymatter', 'href': getContentAnchor(toc[0]) }, locale['bodymatter']),
+          x('a', { 'epub:type': 'bodymatter', 'href': getContentAnchor(toc[0]) }, ctx.locale['bodymatter']),
         ]),
       ]),
     ]),
   ])
 
   return template({
-    config,
+    config: ctx.config,
     content: stringifyXml(tree),
   })
 }

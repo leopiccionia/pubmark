@@ -3,7 +3,7 @@ import rehypeMathJax from 'rehype-mathjax'
 import rehypeStringify from 'rehype-stringify'
 import remarkRehype from 'remark-rehype'
 
-import type { PubmarkConfig } from '@/input/config'
+import type { PubmarkContext } from '@/context'
 import { createBaseMarkdownParser } from '@/input/markdown'
 import { tocDirectivePlugin } from '@/input/plugins/toc'
 import { rewriteUrlPlugin } from '@/input/plugins/url-rewrite'
@@ -28,16 +28,15 @@ interface ParsedSection {
 
 /**
  * Compiles the index document into XHTML
- * @param folder The Pubmark project folder
- * @param config The user config
+ * @param ctx The Pubmark execution context
  * @returns The XHTML string
  */
-export async function compileIndexToXhtml(folder: string, config: PubmarkConfig): Promise<string> {
+export async function compileIndexToXhtml(ctx: PubmarkContext): Promise<string> {
   const template = await createTemplate('epub-index.html', ['bodyClass', 'config', 'content', 'title'] as const)
-  const source = await readTextFile(resolvePath(folder, 'README.md'))
+  const source = await readTextFile(resolvePath(ctx.folder, 'README.md'))
   const document = template({
     bodyClass: 'README-md',
-    config,
+    config: ctx.config,
     content: await compileSection(source),
     title: undefined,
   })
@@ -67,19 +66,18 @@ async function compileSection (source: string): Promise<string> {
 
 /**
  * Compiles the sections into XHTML
- * @param folder The Pubmark project folder
+ * @param ctx The Pubmark execution context
  * @param sections A list of section paths
- * @param config The user config
  * @returns A list of compiled sections
  */
-export async function compileSectionsToXhtml(folder: string, sections: string[], config: PubmarkConfig): Promise<ParsedSection[]> {
+export async function compileSectionsToXhtml(ctx: PubmarkContext, sections: string[]): Promise<ParsedSection[]> {
   const template = await createTemplate('epub-section.html', ['bodyClass', 'config', 'content', 'title'] as const)
 
   return Promise.all(sections.map(async (section) => {
-    const source = await readTextFile(resolvePath(folder, section))
+    const source = await readTextFile(resolvePath(ctx.folder, section))
     const document = template({
       bodyClass: generateItemId(section),
-      config,
+      config: ctx.config,
       content: await compileSection(source),
       title: extractTitle(source),
     })
