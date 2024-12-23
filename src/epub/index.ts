@@ -26,7 +26,7 @@ export async function generateEpub (folder: string): Promise<void> {
   const containerXml = generateContainerXml()
   addTextFile(container, 'META-INF/container.xml', containerXml)
 
-  const containerOpf = await generateContentOpf(folder, config)
+  const containerOpf = await generateContentOpf(folder, config, locale)
   addTextFile(container, 'OEBPS/content.opf', containerOpf)
 
   addTextFile(container, 'OEBPS/toc.ncx', await generateNcx(folder, config)),

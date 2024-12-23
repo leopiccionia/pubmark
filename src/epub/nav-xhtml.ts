@@ -28,6 +28,7 @@ function generateList (entries: TocEntry[]): Element {
  * Generates the navigation document
  * @param folder The Pubmark project folder
  * @param config The user config
+ * @param locale The user locale
  * @returns The generated XML string
  */
 export async function generateNavXhtml (folder: string, config: PubmarkConfig, locale: Locale): Promise<string> {
