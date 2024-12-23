@@ -3,6 +3,7 @@ import { x } from 'xastscript'
 
 import type { PubmarkContext } from '@/context'
 import type { PubmarkConfig } from '@/input/config'
+import { getCover } from '@/input/glob'
 
 export const PUB_ID: string = 'pub-id'
 
@@ -57,7 +58,9 @@ function generateCreators (config: PubmarkConfig): Element[] {
  * @param ctx The Pubmark execution context
  * @returns The generated XML tree
  */
-export function generateMetadata (ctx: PubmarkContext): Element {
+export async function generateMetadata (ctx: PubmarkContext): Promise<Element> {
+  const cover = await getCover(ctx)
+
   const { config } = ctx
   const { id: pubId, onix } = getUniqueIdentifier(config)
 
@@ -75,6 +78,7 @@ export function generateMetadata (ctx: PubmarkContext): Element {
     x('dc:language', config.language),
     x('meta', { property: 'dcterms:modified' }, getTimestamp()),
     x('meta', { refines: `#${PUB_ID}`, property: 'identifier-type', scheme: 'onix:codelist5' }, onix),
+    cover && x('meta', { name: 'cover', content: cover.href }),
     ...generateCreators(config),
   ])
 }

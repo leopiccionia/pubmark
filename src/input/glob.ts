@@ -1,5 +1,6 @@
 import glob from 'fast-glob'
 
+import type { PubmarkContext } from '@/context'
 import { getMimeType, isValidMediaType } from '@/input/mime'
 
 /**
@@ -7,30 +8,30 @@ import { getMimeType, isValidMediaType } from '@/input/mime'
  */
 export interface Asset {
   /**
+   * The asset's path
+   */
+  href: string
+  /**
    * The asset's MIME type
    */
   mime: string
-  /**
-   * The asset's path
-   */
-  path: string
 }
 
 /**
  * Returns a list of asset files
- * @param folder The Pubmark project folder
+ * @param ctx The Pubmark execution context
  * @returns A list of asset file paths
  */
-export async function getAssets (folder: string): Promise<Asset[]> {
-  const paths = await glob(['assets/**'], { cwd: folder })
+export async function getAssets (ctx: PubmarkContext): Promise<Asset[]> {
+  const paths = await glob(['assets/**'], { cwd: ctx.folder })
   const assets = []
 
-  for (const path of paths) {
-    const mime = getMimeType(path)
+  for (const href of paths) {
+    const mime = getMimeType(href)
     if (mime && isValidMediaType(mime)) {
-      assets.push({ mime, path })
+      assets.push({ href, mime })
     } else {
-      console.warn(`Invalid asset "${path}" with ${mime ? `"${mime}"` : 'unknown' } MIME type.`)
+      console.warn(`Invalid asset "${href}" with ${mime ? `"${mime}"` : 'unknown' } MIME type.`)
     }
   }
 
@@ -38,10 +39,28 @@ export async function getAssets (folder: string): Promise<Asset[]> {
 }
 
 /**
+ * Returns the cover file
+ * @param ctx The Pubmark execution context
+ * @returns The cover asset, or `undefined` if not found
+ */
+export async function getCover (ctx: PubmarkContext): Promise<Asset | undefined> {
+  const paths = await glob(['cover.**'], { cwd: ctx.folder })
+
+  for (const href of paths) {
+    const mime = getMimeType(href)
+    if (mime && isValidMediaType(mime)) {
+      return { href, mime }
+    }
+  }
+
+  return undefined
+}
+
+/**
  * Returns a list of sections files
- * @param folder The Pubmark project folder
+ * @param ctx The Pubmark execution context
  * @returns A list of sections file paths
  */
-export async function getSections (folder: string): Promise<string[]> {
-  return glob(['sections/**.md'], { cwd: folder })
+export async function getSections (ctx: PubmarkContext): Promise<string[]> {
+  return glob(['sections/**.md'], { cwd: ctx.folder })
 }

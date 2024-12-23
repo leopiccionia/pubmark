@@ -9,7 +9,7 @@ import { stringifyXml } from '@/utils/xml'
  */
 export function generateContainerXml (): string {
   const tree = x(null, [
-    u('instruction', { name: 'xml' }, 'version="1.0"'),
+    u('instruction', { name: 'xml' }, 'version="1.0" encoding="utf-8"'),
     x('container', { version: '1.0', xmlns: 'urn:oasis:names:tc:opendocument:xmlns:container' }, [
       x('rootfiles', [
         x('rootfile', { 'full-path': 'OEBPS/content.opf', 'media-type': 'application/oebps-package+xml' }),

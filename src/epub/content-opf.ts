@@ -14,7 +14,7 @@ import { stringifyXml } from '@/utils/xml'
  */
 export async function generateContentOpf (ctx: PubmarkContext): Promise<string> {
   const tree = x(null, [
-    u('instruction', { name: 'xml' }, 'version="1.0"'),
+    u('instruction', { name: 'xml' }, 'version="1.0" encoding="utf-8"'),
     x('package', {
       dir: ctx.config.direction,
       'unique-identifier': PUB_ID,
@@ -22,7 +22,7 @@ export async function generateContentOpf (ctx: PubmarkContext): Promise<string> 
       'xml:lang': ctx.config.language,
       xmlns: 'http://www.idpf.org/2007/opf',
     }, [
-      generateMetadata(ctx),
+      await generateMetadata(ctx),
       await generateManifest(ctx),
       await generateSpine(ctx),
       x('guide', [
