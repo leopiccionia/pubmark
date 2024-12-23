@@ -88,9 +88,8 @@ function getTimestamp (): string {
 /**
  * Extracts the package's DublinCore unique identifier from config
  * @param config The user config
- * @return
  */
-function getUniqueIdentifier (config: PubmarkConfig): UniqueIdentifier {
+export function getUniqueIdentifier (config: PubmarkConfig): UniqueIdentifier {
   const { doi, isbn, uuid } = config.ids
   if (isbn) {
     const onix = isbn.length > 10 ? '15' : '02'

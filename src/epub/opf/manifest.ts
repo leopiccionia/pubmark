@@ -16,6 +16,7 @@ export async function generateManifest (folder: string): Promise<Element> {
   // @TODO Cover image
 
   return x('manifest', [
+    x('item', { id: 'toc-ncx', href: 'toc.ncx', 'media-type': 'application/x-dtbncx+xml' }),
     x('item', { id: 'nav-xhtml', href: 'nav.xhtml', 'media-type': 'application/xhtml+xml', properties: 'nav' }),
     x('item', { id: 'index-xhtml', href: 'index.xhtml', 'media-type': 'application/xhtml+xml' }),
     ...sections.map((section) => {

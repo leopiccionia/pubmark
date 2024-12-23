@@ -1,6 +1,7 @@
 import { generateContainerXml } from '@/epub/container-xml'
 import { generateContentOpf } from '@/epub/content-opf'
 import { generateNavXhtml } from '@/epub/nav-xhtml'
+import { generateNcx } from '@/epub/ncx'
 import { saveEpub } from '@/epub/output'
 import { compileSectionsToXhtml, compileIndexToXhtml } from '@/epub/xhtml'
 import { addBinaryFile, addTextFile, createContainer, sealContainer } from '@/epub/zip'
@@ -28,6 +29,7 @@ export async function generateEpub (folder: string): Promise<void> {
   const containerOpf = await generateContentOpf(folder, config)
   addTextFile(container, 'OEBPS/content.opf', containerOpf)
 
+  addTextFile(container, 'OEBPS/toc.ncx', await generateNcx(folder, config)),
   addTextFile(container, 'OEBPS/nav.xhtml', await generateNavXhtml(folder, config, locale))
   addTextFile(container, 'OEBPS/index.xhtml', await compileIndexToXhtml(folder, config))
 
