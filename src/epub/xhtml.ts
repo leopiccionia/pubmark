@@ -19,7 +19,7 @@ interface ParsedSection {
   /**
    * The section's path
    */
-  path: string
+  href: string
   /**
    * The section's compiled content
    */
@@ -81,6 +81,6 @@ export async function compileSectionsToXhtml(ctx: PubmarkContext, sections: stri
       content: await compileSection(source),
       title: extractTitle(source),
     })
-    return { path: replaceExtension(section, '.xhtml'), content: document }
+    return { href: replaceExtension(section, '.xhtml'), content: document }
   }))
 }

@@ -1,37 +1,23 @@
 import glob from 'fast-glob'
 
 import type { PubmarkContext } from '@/context'
-import { getMimeType, isValidMediaType } from '@/input/mime'
-
-/**
- * Metadata for a valid media asset
- */
-export interface Asset {
-  /**
-   * The asset's path
-   */
-  href: string
-  /**
-   * The asset's MIME type
-   */
-  mime: string
-}
+import { getMimeType, isCoreMediaType } from '@/input/mime'
 
 /**
  * Returns a list of asset files
  * @param ctx The Pubmark execution context
  * @returns A list of asset file paths
  */
-export async function getAssets (ctx: PubmarkContext): Promise<Asset[]> {
+export async function getAssets (ctx: PubmarkContext): Promise<string[]> {
   const paths = await glob(['assets/**'], { cwd: ctx.folder })
   const assets = []
 
-  for (const href of paths) {
-    const mime = getMimeType(href)
-    if (mime && isValidMediaType(mime)) {
-      assets.push({ href, mime })
+  for (const path of paths) {
+    const mime = getMimeType(path)
+    if (mime && isCoreMediaType(mime)) {
+      assets.push(path)
     } else {
-      console.warn(`Invalid asset "${href}" with ${mime ? `"${mime}"` : 'unknown' } MIME type.`)
+      console.warn(`Invalid asset "${path}" with ${mime ? `"${mime}"` : 'unknown' } MIME type.`)
     }
   }
 
@@ -43,13 +29,13 @@ export async function getAssets (ctx: PubmarkContext): Promise<Asset[]> {
  * @param ctx The Pubmark execution context
  * @returns The cover asset, or `undefined` if not found
  */
-export async function getCover (ctx: PubmarkContext): Promise<Asset | undefined> {
+export async function getCover (ctx: PubmarkContext): Promise<string | undefined> {
   const paths = await glob(['cover.**'], { cwd: ctx.folder })
 
-  for (const href of paths) {
-    const mime = getMimeType(href)
-    if (mime && isValidMediaType(mime)) {
-      return { href, mime }
+  for (const path of paths) {
+    const mime = getMimeType(path)
+    if (mime && isCoreMediaType(mime)) {
+      return path
     }
   }
 

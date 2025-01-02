@@ -6,13 +6,17 @@ import { generateManifest } from '@/epub/opf/manifest'
 import { generateMetadata, PUB_ID } from '@/epub/opf/metadata'
 import { generateSpine } from '@/epub/opf/spine'
 import { stringifyXml } from '@/utils/xml'
+import type { Resource } from './resource'
 
 /**
  * Generates a package document
  * @param ctx The Pubmark execution context
+ * @param resources The list of packaged resources
  * @returns The generated XML string
  */
-export async function generateContentOpf (ctx: PubmarkContext): Promise<string> {
+export async function generateContentOpf (ctx: PubmarkContext, resources: Resource[]): Promise<string> {
+  const cover = resources.find((resource) => resource.property === 'cover-image')
+
   const tree = x(null, [
     u('instruction', { name: 'xml' }, 'version="1.0" encoding="utf-8"'),
     x('package', {
@@ -22,9 +26,9 @@ export async function generateContentOpf (ctx: PubmarkContext): Promise<string> 
       'xml:lang': ctx.config.language,
       xmlns: 'http://www.idpf.org/2007/opf',
     }, [
-      await generateMetadata(ctx),
-      await generateManifest(ctx),
-      await generateSpine(ctx),
+      await generateMetadata(ctx, cover),
+      await generateManifest(resources),
+      await generateSpine(ctx, cover),
       x('guide', [
         x('reference', { href: 'index.xhtml#toc', title: ctx.locale['toc'], type: 'toc' })
       ]),

@@ -2,8 +2,8 @@ import type { Element } from 'xast'
 import { x } from 'xastscript'
 
 import type { PubmarkContext } from '@/context'
+import type { Resource } from '@/epub/resource'
 import type { PubmarkConfig } from '@/input/config'
-import { getCover } from '@/input/glob'
 
 export const PUB_ID: string = 'pub-id'
 
@@ -56,11 +56,10 @@ function generateCreators (config: PubmarkConfig): Element[] {
 /**
  * Generates the package's `<metadata>` section
  * @param ctx The Pubmark execution context
+ * @param cover The cover's resource
  * @returns The generated XML tree
  */
-export async function generateMetadata (ctx: PubmarkContext): Promise<Element> {
-  const cover = await getCover(ctx)
-
+export async function generateMetadata (ctx: PubmarkContext, cover: Resource | undefined): Promise<Element> {
   const { config } = ctx
   const { id: pubId, onix } = getUniqueIdentifier(config)
 

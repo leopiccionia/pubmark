@@ -45,11 +45,11 @@ export function getMimeType (path: string): string | undefined {
 }
 
 /**
- * Returns if the given MIME type is a valid media type
+ * Returns if the given MIME type is a core media type
  * @param path The MIME type
- * @returns True if the media type is recognized and valid, false otherwise
+ * @returns True if the media type is recognized and a core media type, false otherwise
  */
-export function isValidMediaType (mimeType: string | undefined): boolean {
+export function isCoreMediaType (mimeType: string | undefined): boolean {
   if (!mimeType) {
     return false
   }

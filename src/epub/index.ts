@@ -1,27 +1,12 @@
 import { PubmarkContext } from '@/context'
-import { generateContainerXml } from '@/epub/container-xml'
-import { generateContentOpf } from '@/epub/content-opf'
+import { EpubContainer } from '@/epub/container'
 import { generateCoverXhtml } from '@/epub/cover-xhtml'
 import { generateNavXhtml } from '@/epub/nav-xhtml'
 import { generateNcx } from '@/epub/ncx'
 import { saveEpub } from '@/epub/output'
+import { BinaryResource, TextResource } from '@/epub/resource'
 import { compileSectionsToXhtml, compileIndexToXhtml } from '@/epub/xhtml'
-import { addBinaryFile, addTextFile, createContainer, sealContainer } from '@/epub/zip'
-import type { ZipContainer } from '@/epub/zip'
 import { getAssets, getCover, getSections } from '@/input/glob'
-import { readBinaryFile, readTextFile } from '@/utils/files'
-import { resolvePath } from '@/utils/paths'
-
-/**
- * Copies a binary file into an EPUB container
- * @param container The EPUB container
- * @param destination The path to the file inside the container
- * @param source The file path outside the container
- */
-async function copyBinaryFile (container: ZipContainer, destination: string, source: string): Promise<void> {
-  const blob = await readBinaryFile(source)
-  return addBinaryFile(container, destination, blob)
-}
 
 /**
  * Generates and outputs an EPUB from a Pubmark project folder
@@ -32,33 +17,30 @@ export async function generateEpub (folder: string): Promise<void> {
   await ctx.initialize()
 
   const assets = await getAssets(ctx)
-  const cover = await getCover(ctx)
+  const coverPath = await getCover(ctx)
   const sections = await getSections(ctx)
 
-  const container = await createContainer()
+  const container = new EpubContainer(ctx)
+  await container.initialize()
 
-  const containerXml = generateContainerXml()
-  addTextFile(container, 'META-INF/container.xml', containerXml)
+  await container.addResource(new TextResource('nav.xhtml', await generateNavXhtml(ctx), 'nav'))
+  await container.addResource(new TextResource('toc.ncx', await generateNcx(ctx)))
+  await container.addResource(new TextResource('index.xhtml', await compileIndexToXhtml(ctx)))
 
-  addTextFile(container, 'OEBPS/content.opf', await generateContentOpf(ctx))
-
-  addTextFile(container, 'OEBPS/toc.ncx', await generateNcx(ctx)),
-  addTextFile(container, 'OEBPS/nav.xhtml', await generateNavXhtml(ctx))
-  addTextFile(container, 'OEBPS/index.xhtml', await compileIndexToXhtml(ctx))
-
-  for (const { content, path } of await compileSectionsToXhtml(ctx, sections)) {
-    addTextFile(container, `OEBPS/${path}`, content)
+  for (const { content, href } of await compileSectionsToXhtml(ctx, sections)) {
+    await container.addResource(new TextResource(href, content))
   }
 
   for (const asset of assets) {
-    await copyBinaryFile(container, `OEBPS/${asset.href}`, resolvePath(folder, asset.href))
+    await container.addResource(await BinaryResource.fromFile(ctx, asset))
   }
 
-  if (cover) {
-    await copyBinaryFile(container, `OEBPS/${cover.href}`, resolvePath(folder, cover.href))
-    await addTextFile(container, 'OEBPS/cover.xhtml', await generateCoverXhtml(ctx, cover))
+  if (coverPath) {
+    const cover = await BinaryResource.fromFile(ctx, coverPath, 'cover-image')
+    await container.addResource(cover)
+    await container.addResource(new TextResource('cover.xhtml', await generateCoverXhtml(ctx, cover)))
   }
 
-  const epub = await sealContainer(container)
+  const epub = await container.seal()
   await saveEpub(folder, epub)
 }

@@ -31,7 +31,7 @@ export class PubmarkContext {
   }
 
   /**
-   * Do async initialization of context state
+   * Does async initialization of context state
    */
   async initialize (): Promise<this> {
     this.config = await getUserConfig(this.folder)

@@ -1,24 +1,24 @@
 import { x } from 'xastscript'
 
 import type { PubmarkContext } from '@/context'
-import type { Asset } from '@/input/glob'
 import { createTemplate } from '@/utils/templates'
 import { stringifyXml } from '@/utils/xml'
+import type { Resource } from './resource'
 
 /**
  * Wraps the cover into a XHTML file
  * @param ctx The Pubmark execution context
- * @param asset The cover asset
+ * @param resource The cover's resource
  * @returns The generated XML string
  */
-export async function generateCoverXhtml (ctx: PubmarkContext, asset: Asset): Promise<string> {
+export async function generateCoverXhtml (ctx: PubmarkContext, resource: Resource): Promise<string> {
   const template = await createTemplate('epub-cover.html', ['config', 'content', 'title'] as const)
 
   const tree = x(null, [
     x('section', { 'epub:type': 'cover' }, [
       x('img', {
         alt: ctx.locale['cover'],
-        src: asset.href,
+        src: resource.href,
         title: ctx.locale['cover'],
       }),
     ]),
