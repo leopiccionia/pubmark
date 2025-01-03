@@ -1,9 +1,9 @@
 import { x } from 'xastscript'
 
-import type { PubmarkContext } from '@/context'
-import { createTemplate } from '@/utils/templates'
-import { stringifyXml } from '@/utils/xml'
-import type { Resource } from './resource'
+import type { PubmarkContext } from '~/context'
+import type { Resource } from '~/epub/resource'
+import { createTemplate } from '~/utils/templates'
+import { stringifyXml } from '~/utils/xml'
 
 /**
  * Wraps the cover into a XHTML file

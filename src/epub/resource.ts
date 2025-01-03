@@ -1,9 +1,9 @@
-import type { PubmarkContext } from '@/context'
-import { addBinaryFile, addTextFile } from '@/epub/zip'
-import type { ZipContainer } from '@/epub/zip'
-import { getMimeType } from '@/input/mime'
-import { readBinaryFile } from '@/utils/files'
-import { resolvePath } from '@/utils/paths'
+import type { PubmarkContext } from '~/context'
+import { addBinaryFile, addTextFile } from '~/epub/zip'
+import type { ZipContainer } from '~/epub/zip'
+import { getMimeType } from '~/input/mime'
+import { readBinaryFile } from '~/utils/files'
+import { resolvePath } from '~/utils/paths'
 
 /**
  * A resource manifest property

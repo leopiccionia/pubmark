@@ -1,9 +1,9 @@
-import type { PubmarkContext } from '@/context'
-import { generateContainerXml } from '@/epub/container-xml'
-import { generateContentOpf } from '@/epub/content-opf'
-import type { Resource } from '@/epub/resource'
-import { addTextFile, createContainer, sealContainer } from '@/epub/zip'
-import type { ZipContainer } from '@/epub/zip'
+import type { PubmarkContext } from '~/context'
+import { generateContainerXml } from '~/epub/container-xml'
+import { generateContentOpf } from '~/epub/content-opf'
+import type { Resource } from '~/epub/resource'
+import { addTextFile, createContainer, sealContainer } from '~/epub/zip'
+import type { ZipContainer } from '~/epub/zip'
 
 /**
  * Wrapper class for EPUB-aware ZIP container

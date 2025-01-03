@@ -3,14 +3,14 @@ import rehypeMathJax from 'rehype-mathjax'
 import rehypeStringify from 'rehype-stringify'
 import remarkRehype from 'remark-rehype'
 
-import type { PubmarkContext } from '@/context'
-import { createBaseMarkdownParser } from '@/input/markdown'
-import { tocDirectivePlugin } from '@/input/plugins/toc'
-import { rewriteUrlPlugin } from '@/input/plugins/url-rewrite'
-import { extractTitle } from '@/input/title'
-import { readTextFile } from '@/utils/files'
-import { generateItemId, replaceExtension, resolvePath } from '@/utils/paths'
-import { createTemplate } from '@/utils/templates'
+import type { PubmarkContext } from '~/context'
+import { createBaseMarkdownParser } from '~/input/markdown'
+import { tocDirectivePlugin } from '~/input/plugins/toc'
+import { rewriteUrlPlugin } from '~/input/plugins/url-rewrite'
+import { extractTitle } from '~/input/title'
+import { readTextFile } from '~/utils/files'
+import { generateItemId, replaceExtension, resolvePath } from '~/utils/paths'
+import { createTemplate } from '~/utils/templates'
 
 /**
  * A parsed section

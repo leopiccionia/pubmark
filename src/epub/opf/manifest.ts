@@ -1,8 +1,8 @@
 import type { Element } from 'xast'
 import { x } from 'xastscript'
 
-import type { Resource } from '@/epub/resource'
-import { generateItemId } from '@/utils/paths'
+import type { Resource } from '~/epub/resource'
+import { generateItemId } from '~/utils/paths'
 
 /**
  * Generates the package's manifest

@@ -1,7 +1,7 @@
 import { sep } from 'node:path'
 
-import { writeBinaryFile } from '@/utils/files'
-import { resolvePath } from '@/utils/paths'
+import { writeBinaryFile } from '~/utils/files'
+import { resolvePath } from '~/utils/paths'
 
 /**
  * Computes the path for the EPUB file

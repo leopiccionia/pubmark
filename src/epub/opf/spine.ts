@@ -1,12 +1,12 @@
 import type { Element } from 'xast'
 import { x } from 'xastscript'
 
-import type { PubmarkContext } from '@/context'
-import type { Resource } from '@/epub/resource'
-import { getCover } from '@/input/glob'
-import { extractSections } from '@/input/toc'
-import { readTextFile } from '@/utils/files'
-import { generateItemId, replaceExtension, resolvePath } from '@/utils/paths'
+import type { PubmarkContext } from '~/context'
+import type { Resource } from '~/epub/resource'
+import { getCover } from '~/input/glob'
+import { extractSections } from '~/input/toc'
+import { readTextFile } from '~/utils/files'
+import { generateItemId, replaceExtension, resolvePath } from '~/utils/paths'
 
 /**
  * Generate the package's spine

@@ -1,12 +1,12 @@
 import { u } from 'unist-builder'
 import { x } from 'xastscript'
 
-import type { PubmarkContext } from '@/context'
-import { generateManifest } from '@/epub/opf/manifest'
-import { generateMetadata, PUB_ID } from '@/epub/opf/metadata'
-import { generateSpine } from '@/epub/opf/spine'
-import { stringifyXml } from '@/utils/xml'
-import type { Resource } from './resource'
+import type { PubmarkContext } from '~/context'
+import { generateManifest } from '~/epub/opf/manifest'
+import { generateMetadata, PUB_ID } from '~/epub/opf/metadata'
+import { generateSpine } from '~/epub/opf/spine'
+import type { Resource } from '~/epub/resource'
+import { stringifyXml } from '~/utils/xml'
 
 /**
  * Generates a package document

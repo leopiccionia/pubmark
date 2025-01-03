@@ -1,7 +1,7 @@
 import type { Text } from 'mdast'
 import { select } from 'unist-util-select'
 
-import { parseMarkdown } from '@/input/markdown'
+import { parseMarkdown } from '~/input/markdown'
 
 /**
  * Extracts the section title from heading

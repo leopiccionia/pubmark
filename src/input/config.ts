@@ -2,8 +2,8 @@ import { v4 as uuid } from '@lukeed/uuid/secure'
 import { defu } from 'defu'
 import { load as parseYaml } from 'js-yaml'
 
-import { readTextFile } from '@/utils/files'
-import { resolvePath } from '@/utils/paths'
+import { readTextFile } from '~/utils/files'
+import { resolvePath } from '~/utils/paths'
 
 /**
  * The Pubmark config

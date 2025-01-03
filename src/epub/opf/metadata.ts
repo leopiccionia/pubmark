@@ -1,9 +1,9 @@
 import type { Element } from 'xast'
 import { x } from 'xastscript'
 
-import type { PubmarkContext } from '@/context'
-import type { Resource } from '@/epub/resource'
-import type { PubmarkConfig } from '@/input/config'
+import type { PubmarkContext } from '~/context'
+import type { Resource } from '~/epub/resource'
+import type { PubmarkConfig } from '~/input/config'
 
 export const PUB_ID: string = 'pub-id'
 

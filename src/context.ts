@@ -1,7 +1,7 @@
-import { getUserConfig } from '@/input/config'
-import type { PubmarkConfig } from '@/input/config'
-import { loadLocale } from '@/input/locale'
-import type { Locale } from '@/input/locale'
+import { getUserConfig } from '~/input/config'
+import type { PubmarkConfig } from '~/input/config'
+import { loadLocale } from '~/input/locale'
+import type { Locale } from '~/input/locale'
 
 /**
  * The Pubmark execution context

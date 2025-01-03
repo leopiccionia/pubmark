@@ -1,7 +1,7 @@
 import glob from 'fast-glob'
 
-import type { PubmarkContext } from '@/context'
-import { getMimeType, isCoreMediaType } from '@/input/mime'
+import type { PubmarkContext } from '~/context'
+import { getMimeType, isCoreMediaType } from '~/input/mime'
 
 /**
  * Returns a list of asset files

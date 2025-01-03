@@ -1,12 +1,12 @@
-import { PubmarkContext } from '@/context'
-import { EpubContainer } from '@/epub/container'
-import { generateCoverXhtml } from '@/epub/cover-xhtml'
-import { generateNavXhtml } from '@/epub/nav-xhtml'
-import { generateNcx } from '@/epub/ncx'
-import { saveEpub } from '@/epub/output'
-import { BinaryResource, TextResource } from '@/epub/resource'
-import { compileSectionsToXhtml, compileIndexToXhtml } from '@/epub/xhtml'
-import { getAssets, getCover, getSections } from '@/input/glob'
+import { PubmarkContext } from '~/context'
+import { EpubContainer } from '~/epub/container'
+import { generateCoverXhtml } from '~/epub/cover-xhtml'
+import { generateNavXhtml } from '~/epub/nav-xhtml'
+import { generateNcx } from '~/epub/ncx'
+import { saveEpub } from '~/epub/output'
+import { BinaryResource, TextResource } from '~/epub/resource'
+import { compileSectionsToXhtml, compileIndexToXhtml } from '~/epub/xhtml'
+import { getAssets, getCover, getSections } from '~/input/glob'
 
 /**
  * Generates and outputs an EPUB from a Pubmark project folder

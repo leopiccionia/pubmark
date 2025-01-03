@@ -12,8 +12,19 @@
     "name": "Leonardo Piccioni de Almeida",
     "email": "leopiccionia@gmail.com"
   },
-  "license": "MIT",
+  "license": "BSD-3-Clause",
+  "main": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
+    }
+  },
+  "bin": {
+    "pubmark": "dist/cli.mjs"
+  },
   "scripts": {
+    "build": "unbuild",
     "test": "vitest"
   },
   "dependencies": {
@@ -48,6 +59,8 @@
     "@types/js-yaml": "^4.0.9",
     "@types/remark-heading-id": "^1.0.0",
     "@types/xast": "^2.0.4",
+    "citty": "^0.1.6",
+    "unbuild": "^3.2.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8"
   }

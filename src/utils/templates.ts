@@ -2,9 +2,11 @@ import { resolve } from 'node:path'
 
 import { Eta } from 'eta'
 
-import { readTextFile } from '@/utils/files'
+import { readTextFile } from '~/utils/files'
 
 type Template<T extends string[]> = (data: Record<T[number], any>) => string
+
+const DIRNAME = import.meta.dirname
 
 /**
  * Compiles a function from its source code
@@ -26,6 +28,6 @@ function compileTemplate<T extends string[]> (template: string, variables: T): T
  * @returns The compiled template function
  */
 export async function createTemplate<T extends string[]> (path: string, variables: T): Promise<Template<T>> {
-  const source = await readTextFile(resolve(import.meta.dirname, `../templates/${path}`))
+  const source = await readTextFile(resolve(DIRNAME, `../templates/${path}`))
   return compileTemplate(source, variables)
 }

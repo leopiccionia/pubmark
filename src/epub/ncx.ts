@@ -1,13 +1,13 @@
 import type { Element } from 'xast'
 import { x } from 'xastscript'
 
-import type { PubmarkContext } from '@/context'
-import { getUniqueIdentifier } from '@/epub/opf/metadata'
-import { extractSections } from '@/input/toc'
-import type { TocEntry } from '@/input/toc'
-import { readTextFile } from '@/utils/files'
-import { replaceExtension, resolvePath } from '@/utils/paths'
-import { stringifyXml } from '@/utils/xml'
+import type { PubmarkContext } from '~/context'
+import { getUniqueIdentifier } from '~/epub/opf/metadata'
+import { extractSections } from '~/input/toc'
+import type { TocEntry } from '~/input/toc'
+import { readTextFile } from '~/utils/files'
+import { replaceExtension, resolvePath } from '~/utils/paths'
+import { stringifyXml } from '~/utils/xml'
 
 /**
  * Converts a TOC entry into a NCX `<navPoint>` list

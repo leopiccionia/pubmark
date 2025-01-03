@@ -1,7 +1,7 @@
 import { u } from 'unist-builder'
 import { x } from 'xastscript'
 
-import { stringifyXml } from '@/utils/xml'
+import { stringifyXml } from '~/utils/xml'
 
 /**
  * Generates a basic OCF `container.xml`
