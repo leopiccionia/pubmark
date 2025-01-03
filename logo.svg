@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="30" height="40" version="1.1" viewBox="0 0 30 40" xmlns="http://www.w3.org/2000/svg">
  <title>Pubmark</title>
- <rect width="30" height="40" fill="#fff"/>
  <path d="m25 15v20" stroke="#86b918" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".5" stroke-width="4"/>
  <path d="m5 35v-20l10 10 10-10-10-10-5 5 5 5" fill="none" stroke="#86b918" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
 </svg>
