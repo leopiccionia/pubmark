@@ -13,7 +13,7 @@ const DIRNAME = import.meta.dirname
  * @returns The asset's physical path
  */
 export function getCoreAssetPath (path: string): string {
-  return resolvePath(DIRNAME, `../assets/${path}`)
+  return resolvePath(DIRNAME, `../static/assets/${path}`)
 }
 
 /**

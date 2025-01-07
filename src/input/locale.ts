@@ -18,15 +18,15 @@ export async function loadLocale (folder: string, language: string): Promise<Loc
 
   const languageStack = [
     resolvePath(folder, 'locale.json'),
-    resolvePath(DIRNAME, `../locales/${language}.json`)
+    resolvePath(DIRNAME, `../static/locales/${language}.json`)
   ]
 
   if (languageParts.length > 1) {
-    languageStack.push(resolvePath(DIRNAME, `../locales/${languageParts[0]}.json`))
+    languageStack.push(resolvePath(DIRNAME, `../static/locales/${languageParts[0]}.json`))
   }
 
   if (languageParts[0] !== 'en') {
-    languageStack.push(resolvePath(DIRNAME, '../locales/en.json'))
+    languageStack.push(resolvePath(DIRNAME, '../static/locales/en.json'))
   }
 
   let translations = {}

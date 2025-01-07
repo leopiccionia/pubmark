@@ -27,6 +27,6 @@ function compileTemplate<T extends string[]> (template: string, variables: T): T
  * @returns The compiled template function
  */
 export async function createTemplate<T extends string[]> (path: string, variables: T): Promise<Template<T>> {
-  const source = await readTextFile(resolvePath(DIRNAME, `../templates/${path}`))
+  const source = await readTextFile(resolvePath(DIRNAME, `../static/templates/${path}`))
   return compileTemplate(source, variables)
 }

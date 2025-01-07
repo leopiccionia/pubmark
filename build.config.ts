@@ -6,9 +6,7 @@ export default defineBuildConfig({
   entries: [
     './src/cli',
     './src/index',
-    { builder: 'copy', input: './src/assets', outDir: './dist/assets' },
-    { builder: 'copy', input: './src/locales', outDir: './dist/locales' },
-    { builder: 'copy', input: './src/templates', outDir: './dist/templates' },
+    { builder: 'copy', input: './src/static', outDir: './dist/static' },
   ],
   alias: {
     '~': fileURLToPath(new URL('src', import.meta.url)),
