@@ -2,6 +2,7 @@ import glob from 'fast-glob'
 
 import type { PubmarkContext } from '~/context'
 import { getMimeType, isCoreMediaType } from '~/input/mime'
+import { logWarning } from '~/utils/console'
 
 /**
  * Returns a list of asset files
@@ -17,7 +18,7 @@ export async function getAssets (ctx: PubmarkContext): Promise<string[]> {
     if (mime && isCoreMediaType(mime)) {
       assets.push(path)
     } else {
-      console.warn(`Invalid asset "${path}" with ${mime ? `"${mime}"` : 'unknown' } MIME type.`)
+      logWarning(`Invalid asset "${path}" with ${mime ? `"${mime}"` : 'unknown' } MIME type.`)
     }
   }
 

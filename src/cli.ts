@@ -5,6 +5,7 @@ import { cwd } from 'node:process'
 import { defineCommand, runMain } from 'citty'
 
 import { generateEpub } from '~/index'
+import { logError } from '~/utils/console'
 
 const epub = defineCommand({
   meta: {
@@ -18,8 +19,12 @@ const epub = defineCommand({
       valueHint: 'dist/book.epub',
     },
   },
-  run({ args }) {
-    generateEpub(cwd())
+  async run({ args }) {
+    try {
+      await generateEpub(cwd())
+    } catch (err: unknown) {
+      logError(err as Error)
+    }
   },
 })
 

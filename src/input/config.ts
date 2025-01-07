@@ -144,7 +144,7 @@ export async function getUserConfig (folder: string): Promise<PubmarkConfig> {
     return config
   } catch (err) {
     if (err instanceof Error) {
-      throw new Error(`Error parsing \`meta.yaml\` file: ${err.message}`)
+      throw new Error(`Error parsing \`meta.yaml\` file: ${err.message}`, { cause: err })
     } else {
       throw new Error('Unknown error while parsing `meta.yaml` file')
     }
