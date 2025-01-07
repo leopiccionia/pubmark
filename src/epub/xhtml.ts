@@ -8,8 +8,9 @@ import { createBaseMarkdownParser } from '~/input/markdown'
 import { tocDirectivePlugin } from '~/input/plugins/toc'
 import { rewriteUrlPlugin } from '~/input/plugins/url-rewrite'
 import { extractTitle } from '~/input/title'
+import { getStyleAssets } from '~/output/styles'
 import { readTextFile } from '~/utils/files'
-import { generateItemId, replaceExtension, resolvePath } from '~/utils/paths'
+import { generateItemId, replaceExtension } from '~/utils/paths'
 import { createTemplate } from '~/utils/templates'
 
 /**
@@ -32,12 +33,13 @@ interface ParsedSection {
  * @returns The XHTML string
  */
 export async function compileIndexToXhtml(ctx: PubmarkContext): Promise<string> {
-  const template = await createTemplate('epub-index.html', ['bodyClass', 'config', 'content', 'title'] as const)
-  const source = await readTextFile(resolvePath(ctx.folder, 'README.md'))
+  const template = await createTemplate('epub-index.html', ['bodyClass', 'config', 'content', 'styles', 'title'] as const)
+  const source = await readTextFile(ctx.resolvePath('README.md'))
   const document = template({
     bodyClass: 'README-md',
     config: ctx.config,
     content: await compileSection(source),
+    styles: await getStyleAssets(ctx, 'epub'),
     title: undefined,
   })
   return document
@@ -71,14 +73,16 @@ async function compileSection (source: string): Promise<string> {
  * @returns A list of compiled sections
  */
 export async function compileSectionsToXhtml(ctx: PubmarkContext, sections: string[]): Promise<ParsedSection[]> {
-  const template = await createTemplate('epub-section.html', ['bodyClass', 'config', 'content', 'title'] as const)
+  const template = await createTemplate('epub-section.html', ['bodyClass', 'config', 'content', 'styles', 'title'] as const)
+  const styles = await getStyleAssets(ctx, 'epub')
 
   return Promise.all(sections.map(async (section) => {
-    const source = await readTextFile(resolvePath(ctx.folder, section))
+    const source = await readTextFile(ctx.resolvePath(section))
     const document = template({
       bodyClass: generateItemId(section),
       config: ctx.config,
       content: await compileSection(source),
+      styles,
       title: extractTitle(source),
     })
     return { href: replaceExtension(section, '.xhtml'), content: document }

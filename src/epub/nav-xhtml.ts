@@ -5,7 +5,7 @@ import type { PubmarkContext } from '~/context'
 import { extractSections } from '~/input/toc'
 import type { TocEntry } from '~/input/toc'
 import { readTextFile } from '~/utils/files'
-import { replaceExtension, resolvePath } from '~/utils/paths'
+import { replaceExtension } from '~/utils/paths'
 import { createTemplate } from '~/utils/templates'
 import { stringifyXml } from '~/utils/xml'
 
@@ -31,7 +31,7 @@ function generateList (entries: TocEntry[]): Element {
 export async function generateNavXhtml (ctx: PubmarkContext): Promise<string> {
   const template = await createTemplate('epub-nav.html', ['config', 'content'] as const)
 
-  const source = await readTextFile(resolvePath(ctx.folder, 'README.md'))
+  const source = await readTextFile(ctx.resolvePath('README.md'))
   const toc = extractSections(source)
 
   const tree = x(null, [

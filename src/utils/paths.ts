@@ -1,4 +1,4 @@
-import { format, parse, resolve } from 'node:path'
+import { format, parse, resolve, sep } from 'node:path'
 
 /**
  * Generates an unique ID from file path
@@ -20,11 +20,19 @@ export function replaceExtension (path: string, ext: string): string {
 }
 
 /**
- * Resolve a path relatively to Pubmark project folder
- * @param base The Pubmark project folder
- * @param path The relate path
+ * Resolves a path relatively to a base folder
+ * @param base The base folder
+ * @param path The relative path
  * @returns The resolved path
  */
-export function resolvePath(base: string, path: string): string {
+export function resolvePath (base: string, path: string): string {
   return resolve(base, path)
+}
+
+/**
+ * Splits a file path into directory segments
+ * @param path The file path
+ */
+export function splitPath (path: string): string[] {
+  return path.split(sep)
 }

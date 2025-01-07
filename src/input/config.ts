@@ -137,7 +137,7 @@ function validateUserConfig (partialConfig: Partial<PubmarkConfig>): void {
  */
 export async function getUserConfig (folder: string): Promise<PubmarkConfig> {
   try {
-    const text = await readTextFile(resolvePath(folder, './meta.yaml'))
+    const text = await readTextFile(resolvePath(folder, 'meta.yaml'))
     const partialConfig = parseYaml(text) as Partial<PubmarkConfig>
     validateUserConfig(partialConfig)
     const config = populateUserConfig(partialConfig)

@@ -6,7 +6,7 @@ import { getUniqueIdentifier } from '~/epub/opf/metadata'
 import { extractSections } from '~/input/toc'
 import type { TocEntry } from '~/input/toc'
 import { readTextFile } from '~/utils/files'
-import { replaceExtension, resolvePath } from '~/utils/paths'
+import { replaceExtension } from '~/utils/paths'
 import { stringifyXml } from '~/utils/xml'
 
 /**
@@ -32,7 +32,7 @@ function generateList (entries: TocEntry[], prefix: string = 'ncx-'): Element[] 
  *
  */
 export async function generateNcx (ctx: PubmarkContext): Promise<string> {
-  const source = await readTextFile(resolvePath(ctx.folder, 'README.md'))
+  const source = await readTextFile(ctx.resolvePath('README.md'))
   const toc = extractSections(source)
 
   const tree = x(null, [

@@ -1,5 +1,3 @@
-import { resolve } from 'node:path'
-
 import { defu } from 'defu'
 
 import { readTextFile } from '~/utils/files'
@@ -20,15 +18,15 @@ export async function loadLocale (folder: string, language: string): Promise<Loc
 
   const languageStack = [
     resolvePath(folder, 'locale.json'),
-    resolve(DIRNAME, `../locales/${language}.json`)
+    resolvePath(DIRNAME, `../locales/${language}.json`)
   ]
 
   if (languageParts.length > 1) {
-    languageStack.push(resolve(DIRNAME, `../locales/${languageParts[0]}.json`))
+    languageStack.push(resolvePath(DIRNAME, `../locales/${languageParts[0]}.json`))
   }
 
   if (languageParts[0] !== 'en') {
-    languageStack.push(resolve(DIRNAME, '../locales/en.json'))
+    languageStack.push(resolvePath(DIRNAME, '../locales/en.json'))
   }
 
   let translations = {}

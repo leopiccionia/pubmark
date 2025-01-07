@@ -2,6 +2,7 @@ import { x } from 'xastscript'
 
 import type { PubmarkContext } from '~/context'
 import type { Resource } from '~/epub/resource'
+import { getStyleAssets } from '~/output/styles'
 import { createTemplate } from '~/utils/templates'
 import { stringifyXml } from '~/utils/xml'
 
@@ -12,7 +13,7 @@ import { stringifyXml } from '~/utils/xml'
  * @returns The generated XML string
  */
 export async function generateCoverXhtml (ctx: PubmarkContext, resource: Resource): Promise<string> {
-  const template = await createTemplate('epub-cover.html', ['config', 'content', 'title'] as const)
+  const template = await createTemplate('epub-cover.html', ['config', 'content', 'styles', 'title'] as const)
 
   const tree = x(null, [
     x('section', { 'epub:type': 'cover' }, [
@@ -27,6 +28,7 @@ export async function generateCoverXhtml (ctx: PubmarkContext, resource: Resourc
   return template({
     config: ctx.config,
     content: stringifyXml(tree),
+    styles: await getStyleAssets(ctx, 'epub'),
     title: ctx.locale['cover'],
   })
 }

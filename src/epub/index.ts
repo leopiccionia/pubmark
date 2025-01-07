@@ -7,6 +7,8 @@ import { saveEpub } from '~/epub/output'
 import { BinaryResource, TextResource } from '~/epub/resource'
 import { compileSectionsToXhtml, compileIndexToXhtml } from '~/epub/xhtml'
 import { getAssets, getCover, getSections } from '~/input/glob'
+import { getCoreStyleAssets } from '~/output/styles'
+import { getCoreAssetPath } from '~/output/targets'
 
 /**
  * Generates and outputs an EPUB from a Pubmark project folder
@@ -31,16 +33,20 @@ export async function generateEpub (folder: string): Promise<void> {
     await container.addResource(new TextResource(href, content))
   }
 
+  for (const style of getCoreStyleAssets('epub')) {
+    await container.addResource(await TextResource.fromFile(getCoreAssetPath(style), `assets/${style}`))
+  }
+
   for (const asset of assets) {
-    await container.addResource(await BinaryResource.fromFile(ctx, asset))
+    await container.addResource(await BinaryResource.fromFile(ctx.resolvePath(asset), asset))
   }
 
   if (coverPath) {
-    const cover = await BinaryResource.fromFile(ctx, coverPath, 'cover-image')
+    const cover = await BinaryResource.fromFile(ctx.resolvePath(coverPath), coverPath, 'cover-image')
     await container.addResource(cover)
     await container.addResource(new TextResource('cover.xhtml', await generateCoverXhtml(ctx, cover)))
   }
 
   const epub = await container.seal()
-  await saveEpub(folder, epub)
+  await saveEpub(ctx, epub)
 }

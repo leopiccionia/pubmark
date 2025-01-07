@@ -2,6 +2,7 @@ import { getUserConfig } from '~/input/config'
 import type { PubmarkConfig } from '~/input/config'
 import { loadLocale } from '~/input/locale'
 import type { Locale } from '~/input/locale'
+import { resolvePath } from '~/utils/paths'
 
 /**
  * The Pubmark execution context
@@ -37,5 +38,13 @@ export class PubmarkContext {
     this.config = await getUserConfig(this.folder)
     this.locale = await loadLocale(this.folder, this.config.language)
     return this
+  }
+
+  /**
+   * Resolves a path relatively to Pubmark project folder
+   * @param path The relative path
+   */
+  resolvePath (path: string): string {
+    return resolvePath(this.folder, path)
   }
 }

@@ -1,24 +1,23 @@
-import { sep } from 'node:path'
-
+import type { PubmarkContext } from '~/context'
 import { writeBinaryFile } from '~/utils/files'
-import { resolvePath } from '~/utils/paths'
+import { splitPath } from '~/utils/paths'
 
 /**
  * Computes the path for the EPUB file
- * @param folder The Pubmark project folder
+ * @param ctx The Pubmark execution context
  * @returns The path for the EPUB file
  */
-function computeOutputPath (folder: string): string {
-  const fileName = folder.split(sep).at(-1) ?? 'book'
-  return resolvePath(folder, `./dist/${fileName}.epub`)
+function computeOutputPath (ctx: PubmarkContext): string {
+  const fileName = splitPath(ctx.folder).at(-1) ?? 'book'
+  return ctx.resolvePath(`dist/${fileName}.epub`)
 }
 
 /**
  * Saves an EPUB file to disk
- * @param folder The Pubmark project folder
+ * @param ctx The Pubmark execution context
  * @param epub The EPUB blob
  */
-export async function saveEpub (folder: string, epub: Blob): Promise<void> {
-  const path = computeOutputPath(folder)
+export async function saveEpub (ctx: PubmarkContext, epub: Blob): Promise<void> {
+  const path = computeOutputPath(ctx)
   await writeBinaryFile(path, epub)
 }

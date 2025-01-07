@@ -3,10 +3,9 @@ import { x } from 'xastscript'
 
 import type { PubmarkContext } from '~/context'
 import type { Resource } from '~/epub/resource'
-import { getCover } from '~/input/glob'
 import { extractSections } from '~/input/toc'
 import { readTextFile } from '~/utils/files'
-import { generateItemId, replaceExtension, resolvePath } from '~/utils/paths'
+import { generateItemId, replaceExtension } from '~/utils/paths'
 
 /**
  * Generate the package's spine
@@ -15,7 +14,7 @@ import { generateItemId, replaceExtension, resolvePath } from '~/utils/paths'
  * @returns The generated XML tree
  */
 export async function generateSpine (ctx: PubmarkContext, cover: Resource | undefined): Promise<Element> {
-  const facadeSource = await readTextFile(resolvePath(ctx.folder, './README.md'))
+  const facadeSource = await readTextFile(ctx.resolvePath('./README.md'))
   const toc = extractSections(facadeSource)
 
   return x('spine', { 'page-progression-direction': ctx.config.direction, toc: 'toc-ncx' }, [

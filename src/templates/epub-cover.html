@@ -2,6 +2,9 @@
   <head>
     <meta charset="UTF-8" />
     <title><%= config.title %>: <%= title %></title>
+    <% for (const style of styles) { %>
+      <link rel="stylesheet" type="text/css" href="<%= style %>"/>
+    <% } %>
   </head>
   <body class="pubmark pubmark-epub pubmark-cover">
     <%~ content %>

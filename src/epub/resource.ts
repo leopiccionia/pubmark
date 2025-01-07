@@ -1,9 +1,7 @@
-import type { PubmarkContext } from '~/context'
 import { addBinaryFile, addTextFile } from '~/epub/zip'
 import type { ZipContainer } from '~/epub/zip'
 import { getMimeType } from '~/input/mime'
-import { readBinaryFile } from '~/utils/files'
-import { resolvePath } from '~/utils/paths'
+import { readBinaryFile, readTextFile } from '~/utils/files'
 
 /**
  * A resource manifest property
@@ -71,13 +69,13 @@ export class BinaryResource implements Resource {
 
   /**
    * Returns a resource from a file
-   * @param ctx The Pubmark execution content
-   * @param href The resource's path from project folder
+   * @param path The resource's physical path
+   * @param href The resource's path inside the EPUB container
    * @param property The resource's manifest property
    * @returns A binary-encoded resource
    */
-  public static async fromFile (ctx: PubmarkContext, href: string, property: ResourceProperty | undefined = undefined): Promise<BinaryResource> {
-    const content = await readBinaryFile(resolvePath(ctx.folder, href))
+  public static async fromFile (path: string, href: string, property: ResourceProperty | undefined = undefined): Promise<BinaryResource> {
+    const content = await readBinaryFile(path)
     return new BinaryResource(href, content, property)
   }
 
@@ -133,4 +131,16 @@ export class TextResource implements Resource {
     await addTextFile(container, `OEBPS/${this.href}`, this.content!)
     this.content = undefined
   }
+
+  /**
+   * Returns a resource from a file
+   * @param path The resource's physical path
+   * @param href The resource's path inside the EPUB container
+   * @param property The resource's manifest property
+   * @returns A text-encoded resource
+   */
+    public static async fromFile (path: string, href: string, property: ResourceProperty | undefined = undefined): Promise<TextResource> {
+      const content = await readTextFile(path)
+      return new TextResource(href, content, property)
+    }
 }

@@ -28,7 +28,7 @@ export async function getAssets (ctx: PubmarkContext): Promise<string[]> {
 /**
  * Returns the cover file
  * @param ctx The Pubmark execution context
- * @returns The cover asset, or `undefined` if not found
+ * @returns The cover file path, or `undefined` if not found
  */
 export async function getCover (ctx: PubmarkContext): Promise<string | undefined> {
   const paths = await glob(['cover.**'], { cwd: ctx.folder })
@@ -50,4 +50,15 @@ export async function getCover (ctx: PubmarkContext): Promise<string | undefined
  */
 export async function getSections (ctx: PubmarkContext): Promise<string[]> {
   return glob(['sections/**.md'], { cwd: ctx.folder })
+}
+
+/**
+ * Returns a list of style paths
+ * @param ctx The Pubmark execution context
+ * @param ignoreTargets The output targets to be ignored
+ * @returns A list of CSS file paths
+ */
+export async function getUserStyleAssets (ctx: PubmarkContext, ignoreTargets: string[] = []): Promise<string[]> {
+  const ignorePatterns = ignoreTargets.map((target) => `!assets/**.${target}.css`)
+  return glob(['assets/**.css', ...ignorePatterns], { cwd: ctx.folder })
 }
