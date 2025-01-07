@@ -1,11 +1,10 @@
-import rehypeFigure from '@microflash/rehype-figure'
 import rehypeMathJax from 'rehype-mathjax'
 import rehypeStringify from 'rehype-stringify'
 import remarkRehype from 'remark-rehype'
 
 import type { PubmarkContext } from '~/context'
 import { createBaseMarkdownParser } from '~/input/markdown'
-import { tocDirectivePlugin } from '~/input/plugins/toc'
+import { directivesPlugin } from '~/input/plugins/directives'
 import { rewriteUrlPlugin } from '~/input/plugins/url-rewrite'
 import { extractTitle } from '~/input/title'
 import { getStyleAssets } from '~/output/styles'
@@ -53,9 +52,8 @@ export async function compileIndexToXhtml(ctx: PubmarkContext): Promise<string> 
 async function compileSection (source: string): Promise<string> {
   const content = await createBaseMarkdownParser()
     .use(rewriteUrlPlugin, { extension: '.xhtml' })
-    .use(tocDirectivePlugin)
+    .use(directivesPlugin)
     .use(remarkRehype, { clobberPrefix: '' })
-    .use(rehypeFigure)
     .use(rehypeMathJax)
     .use(rehypeStringify, {
       closeEmptyElements: true,
