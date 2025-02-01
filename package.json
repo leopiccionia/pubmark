@@ -16,13 +16,16 @@
   "main": "./dist/index.mjs",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.mts"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
     }
   },
   "bin": {
     "pubmark": "dist/cli.mjs"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "unbuild",
     "test": "vitest"
@@ -62,6 +65,6 @@
     "@types/xast": "^2.0.4",
     "unbuild": "^3.3.1",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^2.1.8"
+    "vitest": "^3.0.4"
   }
 }
