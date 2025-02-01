@@ -1,6 +1,11 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
+/**
+ * Reads the content of a binary file
+ * @param path The path for the file
+ * @returns The file content
+ */
 export async function readBinaryFile (path: string): Promise<Blob> {
   const buffer = await readFile(path)
   return new Blob([buffer])
