@@ -20,12 +20,12 @@
       "import": "./dist/index.mjs"
     }
   },
-  "bin": {
-    "pubmark": "dist/cli.mjs"
-  },
   "files": [
     "dist"
   ],
+  "bin": {
+    "pubmark": "dist/cli.mjs"
+  },
   "scripts": {
     "build": "unbuild",
     "test": "vitest"

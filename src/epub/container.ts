@@ -14,7 +14,7 @@ export class EpubContainer {
   /**
    * The EPUB container
    */
-    private container!: ZipContainer
+  private container!: ZipContainer
   /**
    * The Pubmark execution context
    */
