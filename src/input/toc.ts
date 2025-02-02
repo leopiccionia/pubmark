@@ -1,3 +1,4 @@
+import type { TocEntry } from '@leopiccionia/epub-builder'
 import type { Link, List } from 'mdast'
 import { toString } from 'mdast-util-to-string'
 import remarkDirective from 'remark-directive'
@@ -6,16 +7,7 @@ import { unified } from 'unified'
 import { select, selectAll } from 'unist-util-select'
 
 /**
- * A link in the table of contents
- */
-export type TocEntry = {
-  text: string,
-  href: string,
-  children: TocEntry[],
-}
-
-/**
- * Extract a list of links from Markdown
+ * Extracts a list of links from Markdown
  * @param source The Markdown source code
  * @returns A list of links
  */
@@ -39,7 +31,7 @@ function extractNestedSections (list: List): TocEntry[] {
 }
 
 /**
- * Extract a list of links from Markdown
+ * Extracts a list of links from Markdown
  * @param source The Markdown source code
  * @returns A list of links
  */
@@ -53,17 +45,7 @@ export function extractSections (source: string): TocEntry[] {
 }
 
 /**
- * Normalize a relative link, returning only the pathname
- * @param href The relative link
- * @returns The normalized link
- */
-export function normalizePath (href: string): string {
-  const url = new URL(href, 'toc://')
-  return url.pathname.slice(1)
-}
-
-/**
- * Parse a Markdown file, extracting the table of content
+ * Parses a Markdown file, extracting the table of content
  * @param source The Markdown source code
  * @returns The list AST node
  */

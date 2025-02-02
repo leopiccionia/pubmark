@@ -1,7 +1,7 @@
+import type { Resource } from '@leopiccionia/epub-builder'
 import { x } from 'xastscript'
 
 import type { PubmarkContext } from '~/context'
-import type { Resource } from '~/epub/resource'
 import { getStyleAssets } from '~/output/styles'
 import { createTemplate } from '~/utils/templates'
 import { stringifyXml } from '~/utils/xml'

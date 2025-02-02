@@ -1,52 +1,63 @@
+import { EpubBuilder } from '@leopiccionia/epub-builder'
+import type { Locale } from '@leopiccionia/epub-builder'
+
 import { PubmarkContext } from '~/context'
-import { EpubContainer } from '~/epub/container'
 import { generateCoverXhtml } from '~/epub/cover-xhtml'
-import { generateNavXhtml } from '~/epub/nav-xhtml'
-import { generateNcx } from '~/epub/ncx'
 import { saveEpub } from '~/epub/output'
-import { BinaryResource, TextResource } from '~/epub/resource'
+import { extractSpine } from '~/epub/spine'
+import { normalizeToc } from './toc'
 import { compileSectionsToXhtml, compileIndexToXhtml } from '~/epub/xhtml'
 import { getAssets, getCover, getSections } from '~/input/glob'
+import { extractSections } from '~/input/toc'
 import { getCoreStyleAssets } from '~/output/styles'
 import { getCoreAssetPath } from '~/output/targets'
+import { readTextFile } from '~/utils/files'
 
 /**
  * Generates and outputs an EPUB from a Pubmark project folder
  * @param folder The Pubmark project folder
  */
 export async function generateEpub (folder: string): Promise<void> {
-  const ctx = new PubmarkContext(folder)
-  await ctx.initialize()
+  const ctx = await PubmarkContext.init(folder)
 
   const assets = await getAssets(ctx)
   const coverPath = await getCover(ctx)
   const sections = await getSections(ctx)
 
-  const container = new EpubContainer(ctx)
-  await container.initialize()
+  const index = await readTextFile(ctx.resolvePath('README.md'))
+  const toc = extractSections(index).map(normalizeToc)
+  const spine = extractSpine(toc, Boolean(coverPath))
 
-  await container.addResource(new TextResource('nav.xhtml', await generateNavXhtml(ctx), 'nav'))
-  await container.addResource(new TextResource('toc.ncx', await generateNcx(ctx)))
-  await container.addResource(new TextResource('index.xhtml', await compileIndexToXhtml(ctx)))
+  const builder = await EpubBuilder.init({
+    locale: ctx.locale as Locale,
+    meta: ctx.config,
+    spine,
+    toc,
+    landmarks: {
+      toc: 'index.xhtml#toc',
+      bodymatter: 'index.xhtml#pubmark-content',
+    },
+  })
+
+  await builder.addTextFile('index.xhtml', await compileIndexToXhtml(ctx))
 
   for (const { content, href } of await compileSectionsToXhtml(ctx, sections)) {
-    await container.addResource(new TextResource(href, content))
+    await builder.addTextFile(href, content)
   }
 
   for (const style of getCoreStyleAssets('epub')) {
-    await container.addResource(await TextResource.fromFile(getCoreAssetPath(style), `assets/${style}`))
+    await builder.copyFile(`assets/${style}`, getCoreAssetPath(style))
   }
 
   for (const asset of assets) {
-    await container.addResource(await BinaryResource.fromFile(ctx.resolvePath(asset), asset))
+    await builder.copyFile(asset, ctx.resolvePath(asset))
   }
 
   if (coverPath) {
-    const cover = await BinaryResource.fromFile(ctx.resolvePath(coverPath), coverPath, 'cover-image')
-    await container.addResource(cover)
-    await container.addResource(new TextResource('cover.xhtml', await generateCoverXhtml(ctx, cover)))
+    const cover = await builder.copyFile(coverPath, ctx.resolvePath(coverPath), ['cover-image'])
+    await builder.addTextFile('cover.xhtml', await generateCoverXhtml(ctx, cover))
   }
 
-  const epub = await container.seal()
+  const epub = await builder.seal()
   await saveEpub(ctx, epub)
 }

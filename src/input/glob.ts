@@ -1,7 +1,7 @@
+import { getMimeType, isCoreMediaType } from '@leopiccionia/epub-builder'
 import glob from 'fast-glob'
 
 import type { PubmarkContext } from '~/context'
-import { getMimeType, isCoreMediaType } from '~/input/mime'
 import { logWarning } from '~/utils/console'
 
 /**

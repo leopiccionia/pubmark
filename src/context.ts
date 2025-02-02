@@ -1,13 +1,12 @@
+import type { EbookMeta } from '@leopiccionia/epub-builder'
+
 import { getUserConfig } from '~/input/config'
-import type { PubmarkConfig } from '~/input/config'
 import { loadLocale } from '~/input/locale'
 import type { Locale } from '~/input/locale'
 import { resolvePath } from '~/utils/paths'
 
 /**
  * The Pubmark execution context
- *
- * You must call `initialize` once before propagating it
  */
 export class PubmarkContext {
   /**
@@ -17,27 +16,30 @@ export class PubmarkContext {
   /**
    * The user config
    */
-  config!: PubmarkConfig
+  config!: EbookMeta
   /**
    * The user locale
    */
   locale!: Locale
 
   /**
-   * The public constructor
+   * The private constructor
    * @param folder The Pubmark project folder
    */
-  constructor (folder: string) {
+  private constructor (folder: string) {
     this.folder = folder
   }
 
   /**
-   * Does async initialization of context state
+   * Returns a new `PubmarkContext`
+   * @param folder The Pubmark project folder
    */
-  async initialize (): Promise<this> {
-    this.config = await getUserConfig(this.folder)
-    this.locale = await loadLocale(this.folder, this.config.language)
-    return this
+  static async init (folder: string): Promise<PubmarkContext> {
+    const context = new PubmarkContext(folder)
+    const config = await getUserConfig(folder)
+    context.config = config
+    context.locale = await loadLocale(folder, config.language)
+    return context
   }
 
   /**

@@ -8,7 +8,7 @@ export type Locale = Record<string, string>
 const DIRNAME = import.meta.dirname
 
 /**
- * Load text translations and localizations
+ * Loads text translations and localizations
  * @param folder The Pubmark project folder
  * @param language The book's language
  * @returns The locale map

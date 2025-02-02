@@ -27,19 +27,16 @@
     "pubmark": "dist/cli.mjs"
   },
   "scripts": {
-    "build": "unbuild",
-    "test": "vitest"
+    "build": "unbuild"
   },
   "dependencies": {
-    "@lukeed/uuid": "^2.0.1",
-    "@zip.js/zip.js": "^2.7.57",
+    "@leopiccionia/epub-builder": "^0.0.1",
     "citty": "^0.1.6",
     "consola": "^3.4.0",
     "defu": "^6.1.4",
     "eta": "^3.5.0",
     "fast-glob": "^3.3.3",
     "js-yaml": "^4.1.0",
-    "mime": "^4.0.6",
     "rehype-mathjax": "^6.0.0",
     "rehype-stringify": "^10.0.1",
     "remark-directive": "^3.0.1",
@@ -63,8 +60,6 @@
     "@types/js-yaml": "^4.0.9",
     "@types/remark-heading-id": "^1.0.0",
     "@types/xast": "^2.0.4",
-    "unbuild": "^3.3.1",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.0.4"
+    "unbuild": "^3.3.1"
   }
 }
